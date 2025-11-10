@@ -4,6 +4,7 @@ const pagehome = document.getElementById("page-home"); // Trang chủ
 const pageproducts = document.getElementById("page-products"); // Trang sản phẩm
 const pagecart = document.getElementById("page-cart"); // Trang giỏ hàng
 const pagecontact = document.getElementById("page-contact"); // Trang liên hệ
+const pagehistory = document.getElementById("page-history");
 
 // Sidebar và overlay
 const sidebar = document.getElementById("thanhcongcu");
@@ -707,6 +708,6 @@ document.getElementById("openOrders")?.addEventListener("click", function () {
     return;
   }
 
-  LoadPage(pagereview);
+  LoadPage(pagehistory);
   hienThiDonHang();
 });

@@ -490,3 +490,31 @@
     width: 100%;
   }
 }
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d7b89c;
+  padding: 15px 25px;
+  color: #fff;
+  border-bottom: 4px solid #b08968;
+}
+
+.page-header h1 {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-header i {
+  font-size: 22px;
+}
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}

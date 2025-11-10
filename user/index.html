@@ -118,7 +118,7 @@
             >
           </li>
           <li id="ordersItem">
-            <a id="openOrders" onclick="LoadPage(pageprofile)">Đơn đặt hàng</a>
+            <a id="openOrders" onclick="LoadPage(pagehistory)">Đơn đặt hàng</a>
           </li>
           <li id="logoutItem"><a id="logoutBtn">Đăng xuất</a></li>
         </ul>
@@ -427,24 +427,6 @@
       </div>
     </main>
 
-    <!-- Trang Xem Lại Đơn Hàng -->
-    <main class="page-content hidden" id="page-review">
-      <div class="review-page-header">
-        <h1><i class="i-review"></i> XEM LẠI ĐƠN HÀNG</h1>
-      </div>
-      <div class="review-container">
-        <div class="review-order-content" id="review-order-content"></div>
-        <div class="review-action-buttons">
-          <button class="review-btn-secondary" onclick="chuyenTrang('page-checkout')">
-            <i class="i-back"></i> Quay lại
-          </button>
-          <button class="review-btn-confirm" onclick="xacNhanDatHang()">
-            <i class="i-check"></i> Xác nhận đặt hàng
-          </button>
-        </div>
-      </div>
-    </main>
-
     <!--Đăng nhập-->
     <div class="DangNhap" id="loginForm">
       <div class="login-wrap">
@@ -649,10 +631,27 @@
         </div>
       </section>
     </main>
-
-    <!--Trang đơn hàng đã mua-->
-    <main class="orders-containe hidden">
-      <section class="ordersTable hidden">
+    <!-- TRANG XEM LẠI ĐƠN HÀNG -->
+    <div class="page-content" id="page-review">
+      <div class="page-header">
+        <h1><i class="i-review"></i> XEM LẠI ĐƠN HÀNG</h1>
+      </div>
+      <div class="container">
+        <div class="order-review" id="order-review-content"></div>
+        <div class="action-buttons">
+          <button class="checkout-btn-secondary" onclick="chuyenTrang('page-checkout')">
+            <i class="i-back"></i> Quay lại
+          </button>
+          <button class="checkout-btn-confirm" onclick="xacNhanDatHang()">
+            <i class="i-check"></i> Xác nhận đặt hàng
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!--Trang xem đơn hàng đã mua-->
+    <main class="page-content hidden" id="page-history">
+      <section class="ordersTable">
         <h1>THÔNG TIN ĐƠN HÀNG</h1>
 
         <div class="orders-grid" id="orders-list">

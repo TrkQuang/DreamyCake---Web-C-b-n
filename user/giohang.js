@@ -171,11 +171,18 @@ function dinhDangGia(gia) {
 
 // ==================== CHUYỂN TRANG ====================
 function chuyenTrang(id) {
-  document
-    .querySelectorAll(".page-content")
-    .forEach((p) => (p.style.display = "none"));
-  document.getElementById(id).style.display = "block";
-  window.scrollTo(0, 0);
+  // Ẩn tất cả các trang bằng cách thêm class hidden
+  const pages = document.querySelectorAll(".page-content");
+  pages.forEach((p) => p.classList.add("hidden"));
+
+  // Hiện trang được chọn bằng cách xóa class hidden
+  const targetPage = document.getElementById(id);
+  if (targetPage) {
+    targetPage.classList.remove("hidden");
+  }
+
+  // Scroll về đầu trang
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 // ==================== THANH TOÁN & ĐỊA CHỈ ====================
@@ -232,7 +239,10 @@ function chuyenDenThanhToan() {
   const subtotalEl = document.getElementById("checkout-subtotal");
   if (subtotalEl) subtotalEl.textContent = dinhDangGia(tong);
 
-  chuyenTrang("page-checkout");
+  const checkoutPage = document.getElementById("page-checkout");
+  if (checkoutPage) {
+    LoadPage(checkoutPage);
+  }
   hienThiDanhSachDiaChi();
 }
 
@@ -267,9 +277,12 @@ function xemLaiDonHang() {
     </ul>
     <p><strong>Tổng cộng: ${tongTien}</strong></p>
     <p>Phương thức thanh toán: ${phuongThuc.toUpperCase()}</p>`;
-  document.getElementById("review-order-content").innerHTML = noiDung;
+  document.getElementById("order-review-content").innerHTML = noiDung;
 
-  chuyenTrang("page-review");
+  const reviewPage = document.getElementById("page-review");
+  if (reviewPage) {
+    LoadPage(reviewPage);
+  }
 }
 
 // ==================== XÁC NHẬN ĐẶT HÀNG ====================
