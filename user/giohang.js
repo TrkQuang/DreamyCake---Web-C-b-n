@@ -99,7 +99,7 @@ function hienThiGioHang() {
     return;
   }
 
-  gioHang.forEach((sp) => {
+  gioHang.forEach((sp, index) => {
     const tien = sp.gia * sp.soLuong;
     const li = document.createElement("li");
     li.classList.add("cart-item");
@@ -115,13 +115,11 @@ function hienThiGioHang() {
       </div>
       <div class="cart-item-controls">
         <div class="quantity-controls">
-          <button onclick="giamSoLuong(${sp.id})">−</button>
+          <button onclick="giamSoLuong(${index})">−</button>
           <span>${sp.soLuong}</span>
-          <button onclick="tangSoLuong(${sp.id})">+</button>
+          <button onclick="tangSoLuong(${index})">+</button>
         </div>
-        <button class="btn-remove" onclick="xoaSanPham(${
-          sp.id
-        })">🗑️ Xóa</button>
+        <button class="btn-remove" onclick="xoaSanPham(${index})">🗑️ Xóa</button>
       </div>`;
     danhSach.appendChild(li);
   });
@@ -133,29 +131,33 @@ function hienThiGioHang() {
 }
 
 // ==================== SỬA SỐ LƯỢNG ====================
-function tangSoLuong(id) {
-  const sp = gioHang.find((p) => p.id === id);
-  if (sp) sp.soLuong++;
-  localStorage.setItem("gioHang", JSON.stringify(gioHang));
-  hienThiGioHang();
-  capNhatBadgeGioHang();
+function tangSoLuong(index) {
+  if (gioHang[index]) {
+    gioHang[index].soLuong++;
+    localStorage.setItem("gioHang", JSON.stringify(gioHang));
+    hienThiGioHang();
+    capNhatBadgeGioHang();
+  }
 }
 
-function giamSoLuong(id) {
-  const sp = gioHang.find((p) => p.id === id);
-  if (sp) {
-    if (sp.soLuong > 1) sp.soLuong--;
-    else xoaSanPham(id);
+function giamSoLuong(index) {
+  if (gioHang[index]) {
+    if (gioHang[index].soLuong > 1) {
+      gioHang[index].soLuong--;
+    } else {
+      xoaSanPham(index);
+      return;
+    }
+    localStorage.setItem("gioHang", JSON.stringify(gioHang));
+    hienThiGioHang();
+    capNhatBadgeGioHang();
   }
-  localStorage.setItem("gioHang", JSON.stringify(gioHang));
-  hienThiGioHang();
-  capNhatBadgeGioHang();
 }
 
 // ==================== XÓA SẢN PHẨM ====================
-function xoaSanPham(id) {
+function xoaSanPham(index) {
   if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
-    gioHang = gioHang.filter((p) => p.id !== id);
+    gioHang.splice(index, 1);
     localStorage.setItem("gioHang", JSON.stringify(gioHang));
     hienThiGioHang();
     capNhatBadgeGioHang();
