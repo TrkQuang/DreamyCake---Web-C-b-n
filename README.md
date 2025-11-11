@@ -5,12 +5,14 @@ Website bán bánh ngọt trực tuyến với giao diện người dùng và tr
 ## ✨ Tính năng
 
 ### 👥 Phía Người dùng:
+
 - 🏠 Trang chủ với danh mục sản phẩm động
 - 🛍️ Giỏ hàng với badge đếm số lượng
 - 🔍 Tìm kiếm và lọc sản phẩm theo danh mục
 - 📱 Giao diện responsive
 
 ### 🔧 Phía Admin:
+
 - 👤 Đăng nhập admin
 - 📦 Quản lý sản phẩm (thêm/sửa/xóa)
 - 🏷️ Quản lý danh mục
@@ -53,6 +55,7 @@ DreamyCake/
 ## 💾 Lưu trữ dữ liệu
 
 Dự án sử dụng LocalStorage để lưu trữ:
+
 - Danh sách sản phẩm
 - Giỏ hàng
 - Giá cả

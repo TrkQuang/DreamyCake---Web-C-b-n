@@ -1,11 +1,18 @@
+#page-cart,
+#page-checkout,
+#page-review,
+#page-history {
+  background-color: #e1ddd851;
+}
+
 .cart-page-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #d7b89c 0%, #c4a587 100%);
+  background: transparent;
   padding: 18px 28px;
-  color: #fff;
-  border-bottom: 3px solid #b08968;
+  color: #4b2e05;
+  border: none;
 }
 
 .cart-page-header h1 {
@@ -20,7 +27,7 @@
 
 .cart-user-info {
   font-size: 14px;
-  color: #fff;
+  color: #4b2e05;
 }
 
 .cart-container {
@@ -160,12 +167,12 @@
 /* ---------- CHECKOUT PAGE ---------- */
 .checkout-page-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #d7b89c, #c4a587);
+  background: transparent;
   padding: 18px 28px;
-  color: #fff;
-  border-bottom: 3px solid #b08968;
+  color: #4b2e05;
+  border: none;
 }
 .checkout-page-header h1 {
   font-size: 1.75rem;
@@ -381,12 +388,12 @@
 /* ---------- REVIEW PAGE ---------- */
 .review-page-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #d7b89c, #c4a587);
+  background: transparent;
   padding: 18px 28px;
-  color: #fff;
-  border-bottom: 3px solid #b08968;
+  color: #4b2e05;
+  border: none;
 }
 .review-page-header h1 {
   font-size: 1.75rem;
@@ -449,6 +456,13 @@
 .review-btn-confirm:hover {
   background: #8b5e3c;
   transform: translateY(-2px);
+}
+
+.phone-error {
+  font-size: 13px;
+  color: red;
+  margin-top: 4px;
+  display: block;
 }
 
 /* ---------- RESPONSIVE ---------- */

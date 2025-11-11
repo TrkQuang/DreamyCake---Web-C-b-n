@@ -299,49 +299,6 @@ ul {
   visibility: visible;
   transform: translateY(0);
 }
-/*Thanh tìm kiếm*/
-.search-bar {
-  width: 250px;
-  display: flex;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 8px 18px;
-  transition: all 0.4s ease;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.search {
-  border-radius: 24px;
-  background-color: transparent;
-  padding: 8px 12px;
-  border: none;
-  color: white;
-  font-size: 15px;
-  outline: none;
-  width: 100%;
-}
-
-.search::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  opacity: 1;
-}
-
-.search-bar i {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.8);
-  margin-right: 8px;
-  transition: color 0.3s ease;
-}
-.search-bar:focus-within {
-  width: 480px;
-  background-color: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 213, 128, 0.4);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-.search-bar:focus-within i {
-  color: #ffd580;
-}
 /*BANNER 1 MAIN*/
 .banner {
   height: 800px;
@@ -1649,20 +1606,27 @@ input:-webkit-autofill {
 
 /* đơn đặt hàng */
 .ordersTable {
+  position: relative;
+  top: 100px;
   max-width: 900px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 0 15px;
 }
 
 .orders-grid {
   display: flex;
   border: 1px solid #ccc; /* viền tổng thể */
+  border-bottom: none;
+}
+
+.orders-grid:last-child {
+  border-bottom: 1px solid #ccc;
 }
 
 .orders-column {
   flex: 1; /* chia đều 4 cột */
-  display: flex;
-  flex-direction: column;
+  text-align: center;
+  padding: 10px 5px;
   border-left: 1px solid #ccc; /* viền giữa các cột */
 }
 
@@ -1670,12 +1634,16 @@ input:-webkit-autofill {
   border-left: none; /* cột đầu không cần viền trái */
 }
 
+/*dòng tiêu đề */
 .column-header {
   font-weight: bold;
   text-align: center;
-  padding: 10px 5px;
   background-color: #f0f0f0;
-  border-bottom: 1px solid #ccc;
+}
+
+/* dòng dữ liệu */
+.column-value {
+  padding: 8px 5px;
 }
 
 .column-item {
@@ -1686,4 +1654,8 @@ input:-webkit-autofill {
 
 .column-item:last-child {
   border-bottom: none;
+}
+#orders-list {
+  overflow-y: scroll;
+  height: 500px;
 }

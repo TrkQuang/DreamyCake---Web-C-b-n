@@ -13,7 +13,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="maincontent.css" />
     <link rel="stylesheet" href="product.css" class="style" />
-  <link rel="stylesheet" href="giohang.css" class="style" />
+    <link rel="stylesheet" href="giohang.css" class="style" />
     <link
       href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
       rel="stylesheet"
@@ -53,18 +53,6 @@
         </a>
       </div>
 
-      <!-- Search Bar -->
-      <div class="search-bar">
-        <i class="bxr bx-search"></i>
-        <input
-          class="search"
-          type="search"
-          name="Search"
-          id="Search"
-          placeholder="Tìm kiếm..."
-        />
-      </div>
-
       <!-- Main Navigation -->
       <nav class="navcenter">
         <ul class="quickbox1 menu">
@@ -94,8 +82,8 @@
       <!-- Quick Actions -->
       <div class="nav">
         <ul class="quickbox">
-          <li class="quickbox-item cart-icon-wrapper" onclick="LoadPage(pagecart)">
-            <i class="bxr bx-cart"></i>
+          <li class="quickbox-item cart-icon-wrapper" id="iconCart">
+            <i class="bxr bx-cart" id="openCart"></i>
             <span class="cart-badge" id="cart-badge">0</span>
           </li>
           <li class="quickbox-item" onclick="openMenu()">
@@ -118,7 +106,7 @@
             >
           </li>
           <li id="ordersItem">
-            <a id="openOrders" onclick="LoadPage(pageprofile)">Đơn đặt hàng</a>
+            <a id="openOrders" onclick="LoadPage(pagehistory)">Đơn đặt hàng</a>
           </li>
           <li id="logoutItem"><a id="logoutBtn">Đăng xuất</a></li>
         </ul>
@@ -374,15 +362,15 @@
             <h4>Nhập địa chỉ mới</h4>
             <div class="checkout-form-group">
               <label>Họ tên người nhận</label>
-              <input type="text" id="checkout-new-name" />
+              <input type="text" id="checkout-new-name" placeholder="VD: Nguyễn Văn An"/>
             </div>
             <div class="checkout-form-group">
               <label>Số điện thoại</label>
-              <input type="text" id="checkout-new-phone" />
+              <input type="text" id="checkout-new-phone" placeholder="VD: 0384937738" />
             </div>
             <div class="checkout-form-group">
               <label>Địa chỉ chi tiết</label>
-              <input type="text" id="checkout-new-address" />
+              <input type="text" id="checkout-new-address" placeholder="VD: 115 Đường ABC, phường 5, quận Bình Thạnh" />
             </div>
             <button class="checkout-btn-primary" onclick="luuDiaChiMoi()">Lưu địa chỉ</button>
           </div>
@@ -422,24 +410,6 @@
           </button>
           <button class="checkout-btn-confirm" onclick="xemLaiDonHang()">
             Xem lại đơn hàng
-          </button>
-        </div>
-      </div>
-    </main>
-
-    <!-- Trang Xem Lại Đơn Hàng -->
-    <main class="page-content hidden" id="page-review">
-      <div class="review-page-header">
-        <h1><i class="i-review"></i> XEM LẠI ĐƠN HÀNG</h1>
-      </div>
-      <div class="review-container">
-        <div class="review-order-content" id="review-order-content"></div>
-        <div class="review-action-buttons">
-          <button class="review-btn-secondary" onclick="chuyenTrang('page-checkout')">
-            <i class="i-back"></i> Quay lại
-          </button>
-          <button class="review-btn-confirm" onclick="xacNhanDatHang()">
-            <i class="i-check"></i> Xác nhận đặt hàng
           </button>
         </div>
       </div>
@@ -649,13 +619,30 @@
         </div>
       </section>
     </main>
-
-    <!--Trang đơn hàng đã mua-->
-    <main class="orders-containe hidden">
-      <section class="ordersTable hidden">
+    <!-- TRANG XEM LẠI ĐƠN HÀNG -->
+    <div class="page-content hidden" id="page-review">
+      <div class="checkout-page-header">
+        <h1><i class="i-review"></i> XEM LẠI ĐƠN HÀNG</h1>
+      </div>
+      <div class="checkout-container">
+        <div class="order-review" id="order-review-content"></div>
+        <div class="action-buttons">
+          <button class="checkout-btn-secondary" onclick="chuyenTrang('page-checkout')">
+            <i class="i-back"></i> Quay lại
+          </button>
+          <button class="checkout-btn-confirm" onclick="xacNhanDatHang()">
+            <i class="i-check"></i> Xác nhận đặt hàng
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!--Trang xem đơn hàng đã mua-->
+    <main class="page-content hidden" id="page-history">
+      <section class="ordersTable">
         <h1>THÔNG TIN ĐƠN HÀNG</h1>
 
-        <div class="orders-grid" id="orders-list">
+        <div id="orders-list">
           <div class="orders-column">
             <div class="column-header">Mã đơn</div>
             <div class="column-header"></div>

@@ -1,6 +1,17 @@
 // ==================== KHAI BÁO DỮ LIỆU ====================
 let gioHang = [];
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 let danhSachDiaChi = [];
+
+if (currentUser && currentUser.address) {
+  // Nếu user có địa chỉ → đặt mặc định
+  danhSachDiaChi.push({
+    name: currentUser.hoten,
+    phone: currentUser.sdt,
+    address: currentUser.address,
+    macDinh: true,
+  });
+}
 
 // ==================== CẬP NHẬT BADGE GIỎ HÀNG ====================
 function capNhatBadgeGioHang() {
@@ -99,7 +110,7 @@ function hienThiGioHang() {
     return;
   }
 
-  gioHang.forEach((sp) => {
+  gioHang.forEach((sp, index) => {
     const tien = sp.gia * sp.soLuong;
     const li = document.createElement("li");
     li.classList.add("cart-item");
@@ -115,13 +126,11 @@ function hienThiGioHang() {
       </div>
       <div class="cart-item-controls">
         <div class="quantity-controls">
-          <button onclick="giamSoLuong(${sp.id})">−</button>
+          <button onclick="giamSoLuong(${index})">−</button>
           <span>${sp.soLuong}</span>
-          <button onclick="tangSoLuong(${sp.id})">+</button>
+          <button onclick="tangSoLuong(${index})">+</button>
         </div>
-        <button class="btn-remove" onclick="xoaSanPham(${
-          sp.id
-        })">🗑️ Xóa</button>
+        <button class="btn-remove" onclick="xoaSanPham(${index})">🗑️ Xóa</button>
       </div>`;
     danhSach.appendChild(li);
   });
@@ -133,29 +142,33 @@ function hienThiGioHang() {
 }
 
 // ==================== SỬA SỐ LƯỢNG ====================
-function tangSoLuong(id) {
-  const sp = gioHang.find((p) => p.id === id);
-  if (sp) sp.soLuong++;
-  localStorage.setItem("gioHang", JSON.stringify(gioHang));
-  hienThiGioHang();
-  capNhatBadgeGioHang();
+function tangSoLuong(index) {
+  if (gioHang[index]) {
+    gioHang[index].soLuong++;
+    localStorage.setItem("gioHang", JSON.stringify(gioHang));
+    hienThiGioHang();
+    capNhatBadgeGioHang();
+  }
 }
 
-function giamSoLuong(id) {
-  const sp = gioHang.find((p) => p.id === id);
-  if (sp) {
-    if (sp.soLuong > 1) sp.soLuong--;
-    else xoaSanPham(id);
+function giamSoLuong(index) {
+  if (gioHang[index]) {
+    if (gioHang[index].soLuong > 1) {
+      gioHang[index].soLuong--;
+    } else {
+      xoaSanPham(index);
+      return;
+    }
+    localStorage.setItem("gioHang", JSON.stringify(gioHang));
+    hienThiGioHang();
+    capNhatBadgeGioHang();
   }
-  localStorage.setItem("gioHang", JSON.stringify(gioHang));
-  hienThiGioHang();
-  capNhatBadgeGioHang();
 }
 
 // ==================== XÓA SẢN PHẨM ====================
-function xoaSanPham(id) {
+function xoaSanPham(index) {
   if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
-    gioHang = gioHang.filter((p) => p.id !== id);
+    gioHang.splice(index, 1);
     localStorage.setItem("gioHang", JSON.stringify(gioHang));
     hienThiGioHang();
     capNhatBadgeGioHang();
@@ -169,11 +182,18 @@ function dinhDangGia(gia) {
 
 // ==================== CHUYỂN TRANG ====================
 function chuyenTrang(id) {
-  document
-    .querySelectorAll(".page-content")
-    .forEach((p) => (p.style.display = "none"));
-  document.getElementById(id).style.display = "block";
-  window.scrollTo(0, 0);
+  // Ẩn tất cả các trang
+  const pages = document.querySelectorAll(".page-content");
+  pages.forEach((p) => p.classList.add("hidden"));
+
+  // Hiện trang được chọn
+  const targetPage = document.getElementById(id);
+  if (targetPage) {
+    targetPage.classList.remove("hidden");
+  }
+
+  // Scroll về đầu trang
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 // ==================== THANH TOÁN & ĐỊA CHỈ ====================
@@ -192,46 +212,126 @@ function luuDiaChiMoi() {
     return;
   }
 
-  danhSachDiaChi.push({ name, phone, address });
+  // Kiểm tra số điện thoại hợp lệ
+  const regex = /^0[0-9]{9}$/;
+  if (!regex.test(phone)) {
+    alert("Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0!");
+    return;
+  }
+
+  // Khi thêm địa chỉ mới, đặt nó làm mặc định
+  danhSachDiaChi.forEach((dc) => (dc.macDinh = false));
+  danhSachDiaChi.push({ name, phone, address, macDinh: true });
+
+  // Ẩn form và hiển thị lại danh sách
   document.getElementById("checkout-new-address-form").style.display = "none";
   hienThiDanhSachDiaChi();
 }
 
+//============ HIỂN THỊ DANH SÁCH ĐỊA CHỈ ==============
 function hienThiDanhSachDiaChi() {
   const list = document.getElementById("checkout-address-list");
   if (!list) return;
   list.innerHTML = "";
 
+  // Nếu chưa có địa chỉ → yêu cầu tạo mới
   if (danhSachDiaChi.length === 0) {
-    list.innerHTML = "<p>Chưa có địa chỉ nào.</p>";
+    list.innerHTML = `
+      <p>Chưa có địa chỉ nào.</p>
+    `;
     return;
   }
 
+  // Hiển thị các địa chỉ có sẵn
   danhSachDiaChi.forEach((dc, i) => {
     const div = document.createElement("div");
     div.classList.add("address-item");
-    div.innerHTML = `
-      <input type="radio" name="checkout-address" ${
-        i === danhSachDiaChi.length - 1 ? "checked" : ""
-      }>
-      <span><strong>${dc.name}</strong> - ${dc.phone}</span><br>
-      <span>${dc.address}</span>`;
+    div.innerHTML = div.innerHTML = `
+    <label>
+      <input type="radio" name="checkout-address" value="${i}" ${
+      dc.macDinh ? "checked" : ""
+    }>
+      <strong>${dc.name}</strong> - ${dc.phone}<br>
+      ${dc.address} ${dc.macDinh ? "<em>(Mặc định)</em>" : ""}
+    </label>
+  `;
     list.appendChild(div);
   });
 }
 
+// ==================== CHUYỂN ĐẾN THANH TOÁN ====================
 function chuyenDenThanhToan() {
   if (gioHang.length === 0) {
     alert("Giỏ hàng trống, vui lòng thêm sản phẩm!");
     return;
   }
 
+  // Tính tổng
   let tong = gioHang.reduce((t, sp) => t + sp.gia * sp.soLuong, 0);
   const subtotalEl = document.getElementById("checkout-subtotal");
   if (subtotalEl) subtotalEl.textContent = dinhDangGia(tong);
 
+  // Chuyển trang và hiển thị địa chỉ
   chuyenTrang("page-checkout");
   hienThiDanhSachDiaChi();
+}
+
+// ==================== RÀNG BUỘC KHI NHẬP SỐ ĐIỆN THOẠI ====================
+document.addEventListener("DOMContentLoaded", function () {
+  const phoneInput = document.getElementById("checkout-new-phone");
+  if (!phoneInput) return;
+
+  // Tạo phần báo lỗi nếu chưa có
+  let phoneError = phoneInput.nextElementSibling;
+  if (!phoneError || !phoneError.classList.contains("phone-error")) {
+    phoneError = document.createElement("small");
+    phoneError.classList.add("phone-error");
+    phoneError.style.color = "red";
+    phoneError.style.display = "none";
+    phoneInput.insertAdjacentElement("afterend", phoneError);
+  }
+
+  // Kiểm tra khi người dùng nhập
+  phoneInput.addEventListener("input", function () {
+    const regex = /^0[0-9]*$/; // chỉ cho phép số, bắt đầu bằng 0
+    if (!regex.test(this.value) || this.value.length !== 10) {
+      phoneError.style.display = "block";
+      phoneError.textContent =
+        "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0";
+    } else {
+      phoneError.style.display = "none";
+      phoneError.textContent = "";
+    }
+  });
+});
+
+// ==================== XÁC NHẬN THANH TOÁN ====================
+function xacNhanThanhToan() {
+  // Nếu chưa có địa chỉ nào
+  if (danhSachDiaChi.length === 0) {
+    alert(
+      "Bạn chưa có địa chỉ nhận hàng. Vui lòng thêm địa chỉ mới trước khi thanh toán!"
+    );
+    hienThiFormDiaChiMoi();
+    return;
+  }
+
+  // Kiểm tra xem người dùng đã chọn địa chỉ chưa
+  const radios = document.getElementsByName("checkout-address");
+  let selected = null;
+  for (const r of radios) {
+    if (r.checked) selected = danhSachDiaChi[r.value];
+  }
+
+  if (!selected) {
+    alert("Vui lòng chọn địa chỉ nhận hàng!");
+    return;
+  }
+
+  // Nếu hợp lệ → tiếp tục xử lý thanh toán
+  alert(
+    `Thanh toán với địa chỉ:\n${selected.name} - ${selected.phone}\n${selected.address}`
+  );
 }
 
 // ==================== XEM LẠI & ĐẶT HÀNG ====================
@@ -265,7 +365,7 @@ function xemLaiDonHang() {
     </ul>
     <p><strong>Tổng cộng: ${tongTien}</strong></p>
     <p>Phương thức thanh toán: ${phuongThuc.toUpperCase()}</p>`;
-  document.getElementById("review-order-content").innerHTML = noiDung;
+  document.getElementById("order-review-content").innerHTML = noiDung;
 
   chuyenTrang("page-review");
 }
@@ -296,11 +396,19 @@ function xacNhanDatHang() {
   orders.push(newOrder);
   localStorage.setItem("orders", JSON.stringify(orders));
 
-  alert("Đặt hàng thành công!");
+  // Reset giỏ hàng
   gioHang = [];
-  localStorage.removeItem("gioHang");
-  hienThiGioHang();
+  localStorage.removeItem("gioHang"); // Xóa giỏ hàng cũ
+  danhSachDiaChi.forEach((d) => (d.macDinh = false));
+
+  // Thông báo
+  alert("Đặt hàng thành công!");
+
+  // Cập nhật giao diện
+  hienThiDanhSachDiaChi();
   capNhatBadgeGioHang();
+
+  // Chuyển về trang sản phẩm
   chuyenTrang("page-products");
 }
 

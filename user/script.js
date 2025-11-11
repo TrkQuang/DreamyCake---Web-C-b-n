@@ -1,9 +1,9 @@
 //Tên các id, class
-const pagereview = document.getElementById("page-review");
 const pagehome = document.getElementById("page-home"); // Trang chủ
 const pageproducts = document.getElementById("page-products"); // Trang sản phẩm
 const pagecart = document.getElementById("page-cart"); // Trang giỏ hàng
 const pagecontact = document.getElementById("page-contact"); // Trang liên hệ
+const pagehistory = document.getElementById("page-history"); //trang đơn đặt hàng
 
 // Sidebar và overlay
 const sidebar = document.getElementById("thanhcongcu");
@@ -654,30 +654,37 @@ function dinhDangGia(number) {
 function hienThiDonHang() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
-  const ordersTable = document.getElementById("review-order-content");
+  const ordersList = document.getElementById("orders-list");
 
-  if (!ordersTable) return; // không có vùng hiển thị đơn hàng
+  if (!ordersList) return;
 
-  // Lọc đơn của người dùng hiện tại
+  // Xóa toàn bộ nội dung cũ
+  ordersList.innerHTML = "";
+
+  // ==== Tạo hàng header ====
+  const headerRow = document.createElement("div");
+  headerRow.classList.add("orders-grid");
+  headerRow.innerHTML = `
+    <div class="orders-column"><div class="column-header">Mã đơn</div></div>
+    <div class="orders-column"><div class="column-header">Ngày đặt</div></div>
+    <div class="orders-column"><div class="column-header">Trạng thái</div></div>
+    <div class="orders-column"><div class="column-header">Thành tiền</div></div>
+  `;
+  ordersList.appendChild(headerRow);
+
+  // Lọc đơn của người dùng
   const userOrders = orders.filter((o) => o.username === currentUser?.username);
 
-  // Xóa nội dung cũ
-  ordersTable.innerHTML = `
-    <h1>THÔNG TIN ĐƠN HÀNG</h1>
-    <div class="orders-grid">
-      <div class="orders-column"><div class="column-header">Mã đơn</div></div>
-      <div class="orders-column"><div class="column-header">Ngày đặt</div></div>
-      <div class="orders-column"><div class="column-header">Trạng thái</div></div>
-      <div class="orders-column"><div class="column-header">Thành tiền</div></div>
-    </div>
-  `;
-
   if (userOrders.length === 0) {
-    ordersTable.innerHTML += `<p style="text-align:center; margin-top:20px;">Chưa có đơn hàng nào.</p>`;
+    const msg = document.createElement("p");
+    msg.style.textAlign = "center";
+    msg.style.marginTop = "20px";
+    msg.textContent = "Chưa có đơn hàng nào.";
+    ordersList.appendChild(msg);
     return;
   }
 
-  // Duyệt và thêm đơn hàng vào bảng
+  // ==== Tạo từng hàng đơn hàng ====
   userOrders.forEach((order) => {
     const orderRow = document.createElement("div");
     orderRow.classList.add("orders-grid");
@@ -695,11 +702,11 @@ function hienThiDonHang() {
         order.total
       )}</div></div>
     `;
-    ordersTable.appendChild(orderRow);
+    ordersList.appendChild(orderRow);
   });
 }
 
-// ==================== KHI CLICK VÀO ĐƠN HÀNG ====================
+// ==================== KHI CLICK VÀO NÚT "ĐƠN HÀNG" ====================
 document.getElementById("openOrders")?.addEventListener("click", function () {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   if (!currentUser) {
@@ -707,6 +714,32 @@ document.getElementById("openOrders")?.addEventListener("click", function () {
     return;
   }
 
-  LoadPage(pagereview);
+  LoadPage(pagehistory);
   hienThiDonHang();
 });
+
+// ==================== CHẶN VÀO GIỎ HÀNG KHI CHƯA ĐĂNG NHẬP + KHỞI TẠO ====================
+document.addEventListener("DOMContentLoaded", function () {
+  const iconCart = document.getElementById("iconCart");
+
+  if (iconCart) {
+    iconCart.addEventListener("click", function (e) {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser) {
+        e.preventDefault();
+        alert("Vui lòng đăng nhập để xem giỏ hàng!");
+        return;
+      }
+      // Nếu đã đăng nhập thì chuyển trang
+      LoadPage(pagecart);
+    });
+  }
+});
+
+function dangXuat() {
+  localStorage.removeItem("currentUser");
+  gioHang = []; // reset giỏ hàng
+  capNhatBadgeGioHang(); // cập nhật badge
+  updateMenu(false); // cập nhật menu
+  LoadPage(pagehome); // quay về trang chủ
+}
