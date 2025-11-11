@@ -1580,43 +1580,18 @@ initializeProductsFromMenuBanh();
 function initializeUsers() {
   let users = JSON.parse(localStorage.getItem("users")) || [];
 
-  // Nếu chưa có users nào, thêm dữ liệu mẫu
-  if (users.length === 0) {
-    users = [
-      {
-        hoten: "Trần Kỳ Quang",
-        email: "quangdeptrai123@gmail.com",
-        sdt: "0347846168",
-        address: "Hà Nội",
-        username: "quang123",
-        password: "123456",
-        isLocked: false,
-      },
-      {
-        hoten: "Lý Lữ Cà",
-        email: "lylu@gmail.com",
-        sdt: "1231231230",
-        address: "New York",
-        username: "lylu",
-        password: "123456",
-        isLocked: true,
-      },
-    ];
-    localStorage.setItem("users", JSON.stringify(users));
-  } else {
-    // Đảm bảo tất cả users đều có thuộc tính isLocked
-    let updated = false;
-    users = users.map((user) => {
-      if (user.isLocked === undefined) {
-        updated = true;
-        return { ...user, isLocked: false };
-      }
-      return user;
-    });
-
-    if (updated) {
-      localStorage.setItem("users", JSON.stringify(users));
+  // Đảm bảo tất cả users đều có thuộc tính isLocked
+  let updated = false;
+  users = users.map((user) => {
+    if (user.isLocked === undefined) {
+      updated = true;
+      return { ...user, isLocked: false };
     }
+    return user;
+  });
+
+  if (updated) {
+    localStorage.setItem("users", JSON.stringify(users));
   }
 
   return users;

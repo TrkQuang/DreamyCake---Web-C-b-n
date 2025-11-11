@@ -13,7 +13,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="maincontent.css" />
     <link rel="stylesheet" href="product.css" class="style" />
-  <link rel="stylesheet" href="giohang.css" class="style" />
+    <link rel="stylesheet" href="giohang.css" class="style" />
     <link
       href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
       rel="stylesheet"
@@ -51,18 +51,6 @@
             alt="Logo DreamyCake"
           />
         </a>
-      </div>
-
-      <!-- Search Bar -->
-      <div class="search-bar">
-        <i class="bxr bx-search"></i>
-        <input
-          class="search"
-          type="search"
-          name="Search"
-          id="Search"
-          placeholder="Tìm kiếm..."
-        />
       </div>
 
       <!-- Main Navigation -->
@@ -374,15 +362,15 @@
             <h4>Nhập địa chỉ mới</h4>
             <div class="checkout-form-group">
               <label>Họ tên người nhận</label>
-              <input type="text" id="checkout-new-name" />
+              <input type="text" id="checkout-new-name" placeholder="VD: Nguyễn Văn An"/>
             </div>
             <div class="checkout-form-group">
               <label>Số điện thoại</label>
-              <input type="text" id="checkout-new-phone" />
+              <input type="text" id="checkout-new-phone" placeholder="VD: 0384937738" />
             </div>
             <div class="checkout-form-group">
               <label>Địa chỉ chi tiết</label>
-              <input type="text" id="checkout-new-address" />
+              <input type="text" id="checkout-new-address" placeholder="VD: 115 Đường ABC, phường 5, quận Bình Thạnh" />
             </div>
             <button class="checkout-btn-primary" onclick="luuDiaChiMoi()">Lưu địa chỉ</button>
           </div>
@@ -632,11 +620,11 @@
       </section>
     </main>
     <!-- TRANG XEM LẠI ĐƠN HÀNG -->
-    <div class="page-content" id="page-review">
-      <div class="page-header">
+    <div class="page-content hidden" id="page-review">
+      <div class="checkout-page-header">
         <h1><i class="i-review"></i> XEM LẠI ĐƠN HÀNG</h1>
       </div>
-      <div class="container">
+      <div class="checkout-container">
         <div class="order-review" id="order-review-content"></div>
         <div class="action-buttons">
           <button class="checkout-btn-secondary" onclick="chuyenTrang('page-checkout')">
