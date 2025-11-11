@@ -1659,12 +1659,17 @@ input:-webkit-autofill {
 .orders-grid {
   display: flex;
   border: 1px solid #ccc; /* viền tổng thể */
+  border-bottom: none;
+}
+
+.orders-grid:last-child {
+  border-bottom: 1px solid #ccc;
 }
 
 .orders-column {
   flex: 1; /* chia đều 4 cột */
-  display: flex;
-  flex-direction: column;
+  text-align: center;
+  padding: 10px 5px;
   border-left: 1px solid #ccc; /* viền giữa các cột */
 }
 
@@ -1672,12 +1677,16 @@ input:-webkit-autofill {
   border-left: none; /* cột đầu không cần viền trái */
 }
 
+/*dòng tiêu đề */
 .column-header {
   font-weight: bold;
   text-align: center;
-  padding: 10px 5px;
   background-color: #f0f0f0;
-  border-bottom: 1px solid #ccc;
+}
+
+/* dòng dữ liệu */
+.column-value {
+  padding: 8px 5px;
 }
 
 .column-item {

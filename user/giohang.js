@@ -11,11 +11,7 @@ function capNhatBadgeGioHang() {
       0
     );
     badge.textContent = tongSoLuong;
-    if (tongSoLuong > 0) {
-      badge.style.display = "flex";
-    } else {
-      badge.style.display = "none";
-    }
+    badge.style.display = tongSoLuong > 0 ? "flex" : "none";
   }
 }
 
@@ -319,9 +315,8 @@ function xacNhanDatHang() {
   chuyenTrang("page-products");
 }
 
-// ==================== KHI TẢI TRANG XONG ====================
 window.addEventListener("DOMContentLoaded", function () {
   gioHang = JSON.parse(localStorage.getItem("gioHang")) || [];
   hienThiGioHang();
-  capNhatBadgeGioHang();
+  capNhatBadgeGioHang(); // đây là dòng quan trọng
 });

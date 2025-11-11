@@ -94,8 +94,8 @@
       <!-- Quick Actions -->
       <div class="nav">
         <ul class="quickbox">
-          <li class="quickbox-item cart-icon-wrapper" onclick="LoadPage(pagecart)">
-            <i class="bxr bx-cart"></i>
+          <li class="quickbox-item cart-icon-wrapper" id="iconCart">
+            <i class="bxr bx-cart" id="openCart"></i>
             <span class="cart-badge" id="cart-badge">0</span>
           </li>
           <li class="quickbox-item" onclick="openMenu()">
@@ -654,7 +654,7 @@
       <section class="ordersTable">
         <h1>THÔNG TIN ĐƠN HÀNG</h1>
 
-        <div class="orders-grid" id="orders-list">
+        <div id="orders-list">
           <div class="orders-column">
             <div class="column-header">Mã đơn</div>
             <div class="column-header"></div>
