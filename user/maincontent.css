@@ -1604,10 +1604,13 @@ input:-webkit-autofill {
   display: none;
 }
 
-/* đơn đặt hàng */
+/* ========= đơn đặt hàng ====== */
+#page-history {
+  cursor: auto;
+}
 .ordersTable {
   position: relative;
-  top: 100px;
+  top: 60px;
   max-width: 900px;
   margin: 0 auto;
   padding: 0 15px;
@@ -1655,7 +1658,16 @@ input:-webkit-autofill {
 .column-item:last-child {
   border-bottom: none;
 }
+
 #orders-list {
-  overflow-y: scroll;
-  height: 500px;
+  max-height: 470px; /* chỉ giới hạn tối đa, không bắt buộc đủ 500px */
+  overflow-y: auto; /* chỉ hiện thanh cuộn khi nội dung vượt giới hạn */
+}
+
+#orders-list::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+#orders-list::-webkit-scrollbar-thumb:hover {
+  background-color: #959494d4; /*Khi rê chuột vào đổi màu đậm hơn */
 }

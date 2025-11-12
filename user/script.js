@@ -15,6 +15,9 @@ const productList = document.querySelector(".product-list");
 const nextBtn = document.querySelector(".next-btn");
 const prevBtn = document.querySelector(".prev-btn");
 
+const editbtn = document.getElementById("editBtn"); //nút chỉnh sửa
+const savebtn = document.getElementById("saveBtn"); //nút lưu
+
 let currentIndex = 0; // Vị trí hiện tại (bắt đầu từ 0)
 const itemsPerSlide = 4; // Hiển thị 4 sản phẩm 1 lần
 const productItems = document.querySelectorAll(".product-item"); // Lấy tất cả sản phẩm
@@ -84,8 +87,8 @@ function LoadPage(page) {
 
 //TÍNH NĂNG
 const openLogin = document.getElementById("openLogin");
-const loginForm = document.getElementById("loginForm");
-const DangKyOverlay = document.getElementById("DangKyOverlay");
+const loginForm = document.getElementById("loginForm"); //trang đăng nhập
+const DangKyOverlay = document.getElementById("DangKyOverlay"); //trang đăng ký
 const registerForm = document.getElementById("registerForm");
 
 //click vào đăng nhập/đăng kí trên tính năng
@@ -111,9 +114,6 @@ function DangKy() {
   sidebar.style.display = "none";
 }
 
-const editbtn = document.getElementById("editBtn");
-const savebtn = document.getElementById("saveBtn");
-
 // Đóng form đăng ký khi click ra ngoài
 DangKyOverlay.addEventListener("click", function (e) {
   if (e.target === this) {
@@ -133,21 +133,29 @@ function DangNhap() {
 //========= ĐĂNG KÝ ==========
 //mắt
 const eyes = document.querySelectorAll(".eyePassword");
+
 eyes.forEach((eye) => {
-  //duyệt từng icon trong ds
+  // Duyệt từng icon trong danh sách
   eye.addEventListener("click", function () {
     const passwordRow = this.closest(".password-row");
     const passwordInput = passwordRow.querySelector("input");
-    passwordInput.type =
-      passwordInput.type === "password" ? "text" : "password";
-    //đổi icon
-    this.classList.toggle("fa-eye"); //bật
-    this.classList.toggle("fa-eye-slash"); //tắt
+
+    // Kiểm tra loại input để đổi giữa password và text
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text"; // Hiện mật khẩu
+      this.classList.add("fa-eye");
+      this.classList.remove("fa-eye-slash");
+    } else {
+      passwordInput.type = "password"; // Ẩn mật khẩu
+      this.classList.add("fa-eye-slash");
+      this.classList.remove("fa-eye");
+    }
   });
 });
 
+//check trong form đăng ký
 registerForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+  e.preventDefault(); //ngăn reload trang mặc định
   const hoten = document.getElementById("hoten").value.trim();
   const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
@@ -237,6 +245,7 @@ const confirmPasswordInput = document.getElementById("registerConfirmPassword");
 const confirmPassErrorEl = document.getElementById("confirmPass"); // id hiển thị lỗi
 
 if (confirmPasswordInput) {
+  //ktr xem ô xác nhận mk có tồn tại trong html hay k
   confirmPasswordInput.addEventListener("focus", function () {
     // ẩn dòng lỗi khi click vào ô xác nhận
     if (confirmPassErrorEl) {
@@ -316,7 +325,7 @@ emailInput.addEventListener("input", function () {
     emailError.style.display = "none";
   }
 });
-
+//khi rời khỏi ô nhập
 emailInput.addEventListener("blur", function () {
   if (this.value.trim() === "") {
     emailError.style.display = "none";
@@ -363,7 +372,7 @@ if (passwordInput) {
   });
 }
 
-// Khi tải trang, nếu trước đó người dùng đã chọn "ghi nhớ"
+// Khi tải trang, nếu trước đó người dùng đã chọn "ghi nhớ" thì tự động điền
 window.addEventListener("load", () => {
   const savedUser = localStorage.getItem("rememberedUser");
   const savedPass = localStorage.getItem("rememberedPass");
@@ -428,18 +437,6 @@ document.querySelector("#loginForm form").addEventListener("submit", (e) => {
   window.location.href = "index.html";
 });
 
-//tự động điền nếu người dùng chọn ghi nhớ
-window.addEventListener("load", () => {
-  const savedUser = localStorage.getItem("rememberedUser");
-  const savedPass = localStorage.getItem("rememberedPass");
-
-  if (savedUser && savedPass) {
-    document.getElementById("username1").value = savedUser;
-    document.getElementById("password").value = savedPass;
-    document.getElementById("rememberMe").checked = true;
-  }
-});
-
 //TRANG THÔNG TIN TÀI KHOẢN
 const avatarPreview = document.getElementById("avatarPreview");
 const avatarInput = document.getElementById("avatarInput");
@@ -461,9 +458,15 @@ avatarInput.addEventListener("change", function () {
 
       // Cập nhật danh sách users
       const users = JSON.parse(localStorage.getItem("users")) || [];
-      const updatedUsers = users.map((u) =>
-        u.username === currentUser.username ? currentUser : u
-      );
+      const updatedUsers = users.map((u) => {
+        if (u.username === currentUser.username) {
+          // Nếu là user hiện tại thì cập nhật thông tin mới
+          return currentUser;
+        } else {
+          // Các user khác giữ nguyên
+          return u;
+        }
+      });
       localStorage.setItem("users", JSON.stringify(updatedUsers));
     };
     reader.readAsDataURL(file); //đọc file từ ảnh
@@ -593,9 +596,13 @@ function enableSave() {
   localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
   // Cập nhật danh sách users
-  const updatedUsers = users.map((u) =>
-    u.username === currentUser.username ? currentUser : u
-  );
+  const updatedUsers = users.map((u) => {
+    if (u.username === currentUser.username) {
+      return currentUser; // nếu đúng username, trả về currentUser
+    } else {
+      return u; // nếu không đúng, giữ nguyên user cũ
+    }
+  });
   localStorage.setItem("users", JSON.stringify(updatedUsers));
 
   // Cập nhật lại giao diện
@@ -634,7 +641,8 @@ window.addEventListener("load", function () {
   }
 
   // Khi load trang -> cập nhật menu theo trạng thái đăng nhập
-  updateMenu(!!currentUser);
+  const isLoggedIn = !!currentUser; // Chuyển currentUser thành boolean
+  updateMenu(isLoggedIn); // Cập nhật menu
 
   // Xử lý nút đăng xuất
   if (logoutBtn) {
@@ -673,7 +681,14 @@ function hienThiDonHang() {
   ordersList.appendChild(headerRow);
 
   // Lọc đơn của người dùng
-  const userOrders = orders.filter((o) => o.username === currentUser?.username);
+  const userOrders = [];
+  if (currentUser) {
+    for (let i = 0; i < orders.length; i++) {
+      if (orders[i].username === currentUser.username) {
+        userOrders.push(orders[i]);
+      }
+    }
+  }
 
   if (userOrders.length === 0) {
     const msg = document.createElement("p");
