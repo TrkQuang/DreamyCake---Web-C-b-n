@@ -467,6 +467,13 @@
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 780px) {
+  #page-cart,
+  #page-checkout,
+  #page-review,
+  #page-history {
+    margin-top: 80px;
+  }
+
   .cart-container,
   .checkout-container,
   .review-container {
@@ -502,5 +509,25 @@
   }
   .cart-item-info {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  #page-cart,
+  #page-checkout,
+  #page-review,
+  #page-history {
+    margin-top: 70px;
+  }
+
+  .cart-page-header h1,
+  .checkout-page-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .cart-container,
+  .checkout-container {
+    padding: 16px 12px;
+    margin: 16px 8px;
   }
 }

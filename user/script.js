@@ -12,40 +12,6 @@ const menuIcon = document.querySelectorAll(".quickbox-item")[2]; // Icon menu (t
 
 //productlist + nút di chuyển
 const productList = document.querySelector(".product-list");
-const nextBtn = document.querySelector(".next-btn");
-const prevBtn = document.querySelector(".prev-btn");
-
-let currentIndex = 0; // Vị trí hiện tại (bắt đầu từ 0)
-const itemsPerSlide = 4; // Hiển thị 4 sản phẩm 1 lần
-const productItems = document.querySelectorAll(".product-item"); // Lấy tất cả sản phẩm
-const totalItems = productItems.length; // Tổng số sản phẩm = 11
-// Hàm trượt slider
-function slideProducts() {
-  // Tính khoảng cách cần trượt
-  // Ví dụ: currentIndex = 1 → trượt 25% (4 sản phẩm)
-  const slideAmount = currentIndex * 25; // 25% = 100% / 4 sản phẩm
-  // Trượt sang trái bằng transform
-  productList.style.transform = `translateX(-${slideAmount}%)`;
-}
-// Khi bấm nút Next (→)
-nextBtn.addEventListener("click", function () {
-  currentIndex++; // Tăng vị trí lên 1
-  // Nếu đến cuối (vị trí 11) → Quay về đầu (vị trí 0)
-  if (currentIndex >= totalItems - itemsPerSlide + 1) {
-    currentIndex = 0;
-  }
-  slideProducts(); // Trượt
-});
-
-// Khi bấm nút Prev (←)
-prevBtn.addEventListener("click", function () {
-  currentIndex--; // Giảm vị trí xuống 1
-  // Nếu lùi quá đầu → Nhảy về cuối
-  if (currentIndex < 0) {
-    currentIndex = totalItems - itemsPerSlide;
-  }
-  slideProducts(); // Trượt
-});
 
 function openMenu() {
   sidebar.classList.add("active");
@@ -61,7 +27,6 @@ function closeMenu() {
 function toggleChat() {
   const chatWidget = document.querySelector(".chat-widget");
   chatWidget.classList.toggle("active");
-  chatWidget.style.display = "block";
 }
 const pageprofile = document.getElementById("page-profile");
 //HÀM CHUYỂN TRANG (nhận vào 1 trang cần hiển thị)

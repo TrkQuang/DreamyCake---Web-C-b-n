@@ -22,6 +22,8 @@
       href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide/dist/css/splide.min.css">
+
     <!--web hiện thị chuẩn trên đth và máy tính bảng-->
     <meta
       name="viewport"
@@ -147,63 +149,52 @@
 
       <!-- DANH MỤC SẢN PHẨM -->
       <section class="product-section" id="product-section">
-        <h2 class="title">DANH MỤC SẢN PHẨM</h2>
-        <div class="product-list-wrapper">
-          <ul class="product-list">
-            <li class="product-item" data-category = "Tiramisu cake">
-              <img src="../img/danhmucsp/tiramisu.svg" alt="Tiramisu"  />
-              <strong>TIRAMISU</strong>
-            </li>
-            <li class="product-item" data-category= "Macaron">
-              <img src="../img/danhmucsp/macaron.svg" alt="Macaron" />
-              <strong>MACARON</strong>
-            </li>
-            <li class="product-item" data-category="Eclair">
-              <img src="../img/danhmucsp/eclair.svg" alt="Eclair" />
-              <strong>ÉCLAIR</strong>
-            </li>
-            <li class="product-item" data-category="Donut">
-              <img src="../img/danhmucsp/donut.svg" alt="Donut" />
-              <strong>DONUT</strong>
-            </li>
-            <li class="product-item" data-category="Cupcpake">
-              <img src="../img/danhmucsp/cupcake.svg" alt="Cupcake"/>
-              <strong>CUPCAKE</strong>
-            </li>
-            <li class="product-item" data-category="CrepeCake">
-              <img src="../img/danhmucsp/crepe.svg" alt="Crepecake"/>
-              <strong>CREPECAKE</strong>
-            </li>
-            <li class="product-item" data-category="Bánh croissant">
-              <img
-                src="../img/danhmucsp/circular.svg"
-                alt="Circular Croissaint"
-              />
-              <strong>CIRCULAR CROISSAINT</strong>
-            </li>
-            <li class="product-item" data-category ="Cheesecake">
-              <img src="../img/danhmucsp/cheesecake.svg" alt="CheeseCake" />
-              <strong>CHEESECAKE</strong>
-            </li>
-            <li class="product-item" data-category="Cakeroll">
-              <img src="../img/danhmucsp/rollcake.svg" alt="Cakeroll" />
-              <strong>CAKEROLL</strong>
-            </li>
-            <li class="product-item" data-category ="Bánh croissant">
-              <img src="../img/danhmucsp/croissaint.svg" alt="Croissaint" />
-              <strong>CROISSAINT</strong>
-            </li>
-          </ul>
-          <button class="slider-btn prev-btn">‹</button>
-          <button class="slider-btn next-btn">›</button>
-        </div>
-        <button
-          type="button"
-          class="view-all"
-          onclick="LoadPage(pageproducts)"
-        >
-          XEM TẤT CẢ
-        </button>
+<h2 class="title">DANH MỤC SẢN PHẨM</h2>
+
+<div class="splide" id="productSlider">
+  <div class="splide__track">
+    <ul class="splide__list">
+      <li class="splide__slide product-item" data-category="Tiramisu cake">
+        <img src="../img/danhmucsp/tiramisu.svg" alt="Tiramisu" />
+        <strong>TIRAMISU</strong>
+      </li>
+
+      <li class="splide__slide product-item" data-category="Macaron">
+        <img src="../img/danhmucsp/macaron.svg" alt="Macaron" />
+        <strong>MACARON</strong>
+      </li>
+
+      <li class="splide__slide product-item" data-category="Eclair">
+        <img src="../img/danhmucsp/eclair.svg" alt="Eclair" />
+        <strong>ÉCLAIR</strong>
+      </li>
+
+      <li class="splide__slide product-item" data-category="Donut">
+        <img src="../img/danhmucsp/donut.svg" alt="Donut" />
+        <strong>DONUT</strong>
+      </li>
+
+      <li class="splide__slide product-item" data-category="Cupcake">
+        <img src="../img/danhmucsp/cupcake.svg" alt="Cupcake" />
+        <strong>CUPCAKE</strong>
+      </li>
+
+      <li class="splide__slide product-item" data-category="CrepeCake">
+        <img src="../img/danhmucsp/crepe.svg" alt="CrepeCake" />
+        <strong>CREPECAKE</strong>
+      </li>
+
+      <li class="splide__slide product-item" data-category="Cheesecake">
+        <img src="../img/danhmucsp/cheesecake.svg" alt="Cheesecake" />
+        <strong>CHEESECAKE</strong>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<button type="button" class="view-all" onclick="LoadPage(pageproducts)">
+  XEM TẤT CẢ
+</button>
       </section>
 
       <!-- Hot News / Bestsellers -->
@@ -235,8 +226,6 @@
                 type="text"
                 id="productSearch"
                 placeholder="Tìm kiếm sản phẩm..."
-                onkeyup="handleSearchInput()"
-                onfocus="handleSearchInput()"
               />
               <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
@@ -714,8 +703,10 @@
       </div>
     </footer>
     <!--SCRIPT-->
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide/dist/js/splide.min.js"></script>
     <script src="sanppham.js"></script>
     <script src="script.js"></script>
     <script src="giohang.js"></script>
+    <script src="splide.js"></script>
   </body>
 </html>

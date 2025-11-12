@@ -30,6 +30,7 @@ a {
 
 /* Mặc định HIỆN */
 .page-content {
+  left: 0;
   margin-top: 100px;
   display: block;
   min-height: 100vh;
@@ -46,6 +47,7 @@ a {
   width: 100%;
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 997;
   display: flex;
   justify-content: space-between;
@@ -453,21 +455,10 @@ ul {
 }
 
 /* Slider container */
-.product-list-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  overflow: hidden;
-  position: relative;
-}
 
-.product-list {
-  display: flex;
-  gap: 35px;
-  transition: transform 0.5s ease;
-  margin: 0 0 50px 0;
-  padding: 30px 20px;
+.splide__track {
+  overflow: visible !important;
 }
-
 .product-item {
   flex: 0 0 calc(25% - 27px);
   min-width: calc(25% - 27px);
@@ -499,6 +490,7 @@ ul {
   transform: scale(1.08);
 }
 .view-all {
+  margin-top: 25px;
   background: transparent;
   border: 2px solid #ffd580;
   color: #ffd580;
@@ -510,7 +502,40 @@ ul {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 16px rgba(255, 213, 128, 0.2);
 }
+/* Nút điều hướng chung */
+.splide__arrow {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #b67a3d;
+  color: #4b2c0f;
+  width: 60px; /* tăng từ 40px lên 60px */
+  height: 60px; /* tăng từ 40px lên 60px */
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px; /* tăng kích thước mũi tên */
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 10;
+  outline: none;
+}
 
+/* Khi hover vào nút */
+.splide__arrow:hover {
+  background: #b67a3d;
+  color: #fff;
+  transform: translateY(-50%) scale(1.1); /* giữ căn giữa + phóng to */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  cursor: url("../img/icon/pointer.svg"), auto;
+}
+
+/* Căn giữa theo chiều dọc */
+.splide__arrow--prev,
+.splide__arrow--next {
+  top: 50%;
+  transform: translateY(-50%);
+}
 .view-all:hover {
   background: linear-gradient(135deg, #ffd580 0%, #ffcc33 100%);
   color: #4b2c0f;
@@ -712,6 +737,7 @@ button:hover {
   z-index: 1000;
 }
 .chat-widget.active {
+  display: block;
   transform: translateY(0);
   opacity: 1;
 }
@@ -757,8 +783,13 @@ button:hover {
 @media screen and (max-width: 768px) {
   /* Header */
   .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     padding: 10px 15px;
     border-radius: 0 0 15px 15px;
+    z-index: 997;
   }
 
   .hamburger img {
@@ -768,6 +799,11 @@ button:hover {
   /* Hide main navigation on mobile */
   .navcenter {
     display: none;
+  }
+
+  /* Page Content */
+  .page-content {
+    margin-top: 80px;
   }
 
   /* Search Bar */
@@ -917,8 +953,13 @@ button:hover {
 @media screen and (max-width: 480px) {
   /* Header */
   .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     padding: 8px 10px;
     border-radius: 0 0 12px 12px;
+    z-index: 997;
   }
 
   .hamburger {
@@ -927,6 +968,11 @@ button:hover {
 
   .hamburger img {
     height: 50px;
+  }
+
+  /* Page Content */
+  .page-content {
+    margin-top: 70px;
   }
 
   /* Search Bar - Smaller on mobile */

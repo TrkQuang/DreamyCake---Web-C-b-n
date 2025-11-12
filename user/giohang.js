@@ -199,7 +199,14 @@ function chuyenTrang(id) {
 // ==================== THANH TOÁN & ĐỊA CHỈ ====================
 function hienThiFormDiaChiMoi() {
   const form = document.getElementById("checkout-new-address-form");
-  if (form) form.style.display = "block";
+  if (!form) return; // nếu không tìm thấy form thì thoát
+
+  // Nếu đang hiển thị thì ẩn, ngược lại thì hiện
+  if (form.style.display === "block") {
+    form.style.display = "none";
+  } else {
+    form.style.display = "block";
+  }
 }
 
 function luuDiaChiMoi() {
@@ -252,7 +259,7 @@ function hienThiDanhSachDiaChi() {
       dc.macDinh ? "checked" : ""
     }>
       <strong>${dc.name}</strong> - ${dc.phone}<br>
-      ${dc.address} ${dc.macDinh ? "<em>(Mặc định)</em>" : ""}
+      ${dc.address}
     </label>
   `;
     list.appendChild(div);

@@ -59,9 +59,9 @@ for (let i = 0; i < MenuBanh.length; i++) {
   }
 }
 
-let dsHienThi = tatCaBanh.slice(); // mảng đang hiển thị
+let dsHienThi = tatCaBanh.slice(); // mảng hiển thị hiện tại
 let trang = 1; // trang hiện tại
-let moiTrang = 8; // số sp/trang
+let moiTrang = 8; // số sản phẩm mỗi trang
 
 // 3) Render lưới theo dsHienThi và trang
 function renderGrid() {
@@ -163,6 +163,20 @@ function filterByCategory(categoryName) {
     dsHienThi = tatCaBanh.slice();
   }
   trang = 1;
+  // Cập nhật trạng thái active của category tabs
+  const tabs = document.querySelectorAll(".category-tab");
+  tabs.forEach((tab) => {
+    tab.classList.remove("active");
+    // Nếu categoryName rỗng, active tab "Tất cả"
+    if (!categoryName && tab.textContent.trim() === "Tất cả") {
+      tab.classList.add("active");
+    }
+    // Nếu có categoryName, active tab tương ứng
+    else if (categoryName && tab.textContent.trim() === categoryName) {
+      tab.classList.add("active");
+    }
+  });
+
   refresh(); // gọi hàm bạn dùng để vẽ lại danh sách + phân trang
 }
 
@@ -263,16 +277,18 @@ function closeProductModal() {
   const modal = document.getElementById("productModal");
   if (modal) modal.classList.remove("active");
 }
-//Hàm này cho cái danh mục sản phẩm lượt lướt khi click vô thì nó ra trang sản ppham63 có sẵn category
-document.querySelectorAll(".product-item[data-category]").forEach((item) => {
-  item.addEventListener("click", function () {
-    const cat = this.dataset.category;
-    LoadPage(pageproducts); // Chuyển sang trang sản phẩm
-    setTimeout(() => {
-      filterByCategory(cat); // Lọc theo category (đảm bảo trang đã load)
-    }, 100); // Delay nhỏ để chắc chắn trang đã chuyển
+//Hàm này cho cái danh mục sản phẩm lượt lướt khi click vô thì nó ra trang sản ppham có sẵn category
+function attachCategoryClickEvents() {
+  document.querySelectorAll(".product-item[data-category]").forEach((item) => {
+    item.addEventListener("click", function () {
+      const cat = this.dataset.category;
+      LoadPage(pageproducts); // Chuyển sang trang sản phẩm
+      setTimeout(() => {
+        filterByCategory(cat); // Lọc theo category (đảm bảo trang đã load)
+      }, 100); // Delay nhỏ để chắc chắn trang đã chuyển
+    });
   });
-});
+}
 
 function renderMenuRight(products) {
   const menuRight = document.querySelector(".menu-right");
@@ -390,4 +406,5 @@ function renderCategoryTabs() {
 window.addEventListener("DOMContentLoaded", () => {
   renderCategoryTabs(); // Render category tabs
   renderMenuRight(tatCaBanh.slice(0, 6)); // Hiện 6 sản phẩm đầu ở menu-right
+  attachCategoryClickEvents(); // Gắn sự kiện click cho danh mục sản phẩm
 });
