@@ -17,10 +17,7 @@ if (currentUser && currentUser.address) {
 function capNhatBadgeGioHang() {
   const badge = document.getElementById("cart-badge");
   if (badge) {
-    const tongSoLuong = gioHang.reduce(
-      (total, item) => total + item.soLuong,
-      0
-    );
+    const tongSoLuong = gioHang.reduce((total, item) => total + item.sl, 0);
     badge.textContent = tongSoLuong;
     if (tongSoLuong > 0) {
       badge.style.display = "flex";
@@ -69,20 +66,41 @@ function themVaoGioHang(tenOrId, gia, hinhAnh) {
     };
   }
 
+  // ✅ KIỂM TRA TỒN KHO TRƯỚC KHI THÊM
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const productInStock = products.find((p) => p.name === sanPham.ten);
+
+  console.log("🔍 Kiểm tra tồn kho:", {
+    tenSanPham: sanPham.ten,
+    timThay: !!productInStock,
+    tonKho: productInStock ? productInStock.amount : "Không tìm thấy",
+  });
+
   // Tìm sản phẩm trong giỏ hàng (dựa vào tên hoặc id)
   const tonTai = gioHang.find(
     (p) => p.ten === sanPham.ten || p.id === sanPham.id
   );
 
+  const soLuongHienTai = tonTai ? tonTai.sl : 0;
+  const tonKho = productInStock ? productInStock.amount || 0 : 999; // Nếu không tìm thấy, cho phép thêm
+
+  // Kiểm tra nếu vượt quá tồn kho
+  if (productInStock && soLuongHienTai + 1 > tonKho) {
+    alert(
+      `⚠️ Không thể thêm! Sản phẩm "${sanPham.ten}" chỉ còn ${tonKho} cái trong kho.\nBạn đã có ${soLuongHienTai} trong giỏ hàng.`
+    );
+    return;
+  }
+
   if (tonTai) {
-    tonTai.soLuong++;
+    tonTai.sl++;
   } else {
     gioHang.push({
       id: sanPham.id,
       ten: sanPham.ten,
       gia: sanPham.gia,
       hinhAnh: sanPham.hinhAnh,
-      soLuong: 1,
+      sl: 1,
     });
   }
 
@@ -92,7 +110,7 @@ function themVaoGioHang(tenOrId, gia, hinhAnh) {
   // Cập nhật badge
   capNhatBadgeGioHang();
 
-  alert("Đã thêm " + sanPham.ten + " vào giỏ hàng!");
+  alert("✅ Đã thêm " + sanPham.ten + " vào giỏ hàng!");
   hienThiGioHang();
 }
 
@@ -111,7 +129,7 @@ function hienThiGioHang() {
   }
 
   gioHang.forEach((sp, index) => {
-    const tien = sp.gia * sp.soLuong;
+    const tien = sp.gia * sp.sl;
     const li = document.createElement("li");
     li.classList.add("cart-item");
     li.innerHTML = `
@@ -120,14 +138,14 @@ function hienThiGioHang() {
         <div class="cart-item-details">
           <div class="cart-item-name">${sp.ten}</div>
           <div class="cart-item-price">${dinhDangGia(sp.gia)} x ${
-      sp.soLuong
+      sp.sl
     } = ${dinhDangGia(tien)}</div>
         </div>
       </div>
       <div class="cart-item-controls">
         <div class="quantity-controls">
           <button onclick="giamSoLuong(${index})">−</button>
-          <span>${sp.soLuong}</span>
+          <span>${sp.sl}</span>
           <button onclick="tangSoLuong(${index})">+</button>
         </div>
         <button class="btn-remove" onclick="xoaSanPham(${index})">🗑️ Xóa</button>
@@ -144,7 +162,19 @@ function hienThiGioHang() {
 // ==================== SỬA SỐ LƯỢNG ====================
 function tangSoLuong(index) {
   if (gioHang[index]) {
-    gioHang[index].soLuong++;
+    // ✅ Kiểm tra tồn kho trước khi tăng
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+    const productInStock = products.find((p) => p.name === gioHang[index].ten);
+    const tonKho = productInStock ? productInStock.amount || 0 : 0;
+
+    if (gioHang[index].sl + 1 > tonKho) {
+      alert(
+        `⚠️ Không thể thêm! Sản phẩm "${gioHang[index].ten}" chỉ còn ${tonKho} cái trong kho.`
+      );
+      return;
+    }
+
+    gioHang[index].sl++;
     localStorage.setItem("gioHang", JSON.stringify(gioHang));
     hienThiGioHang();
     capNhatBadgeGioHang();
@@ -153,8 +183,8 @@ function tangSoLuong(index) {
 
 function giamSoLuong(index) {
   if (gioHang[index]) {
-    if (gioHang[index].soLuong > 1) {
-      gioHang[index].soLuong--;
+    if (gioHang[index].sl > 1) {
+      gioHang[index].sl--;
     } else {
       xoaSanPham(index);
       return;
@@ -280,7 +310,7 @@ function chuyenDenThanhToan() {
   }
 
   // Tính tổng
-  let tong = gioHang.reduce((t, sp) => t + sp.gia * sp.soLuong, 0);
+  let tong = gioHang.reduce((t, sp) => t + sp.gia * sp.sl, 0);
   const subtotalEl = document.getElementById("checkout-subtotal");
   if (subtotalEl) subtotalEl.textContent = dinhDangGia(tong);
 
@@ -380,9 +410,9 @@ function xemLaiDonHang() {
       ${gioHang
         .map(
           (sp) =>
-            `<li>${sp.ten} - ${sp.soLuong} x ${dinhDangGia(
-              sp.gia
-            )} = ${dinhDangGia(sp.gia * sp.soLuong)}</li>`
+            `<li>${sp.ten} - ${sp.sl} x ${dinhDangGia(sp.gia)} = ${dinhDangGia(
+              sp.gia * sp.sl
+            )}</li>`
         )
         .join("")}
     </ul>
@@ -411,8 +441,14 @@ function xacNhanDatHang() {
     orderId: "DH" + Date.now(),
     username: currentUser.username,
     date: new Date().toLocaleString("vi-VN"),
-    items: gioHang,
-    total: gioHang.reduce((sum, sp) => sum + sp.gia * sp.soLuong, 0),
+    items: gioHang.map((item) => ({
+      ten: item.ten,
+      name: item.ten,
+      gia: item.gia,
+      hinhAnh: item.hinhAnh,
+      sl: item.sl,
+    })),
+    total: gioHang.reduce((sum, sp) => sum + sp.gia * sp.sl, 0),
     status: "Chờ xác nhận",
   };
 
