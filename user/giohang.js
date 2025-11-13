@@ -377,6 +377,36 @@ function xemLaiDonHang() {
   chuyenTrang("page-review");
 }
 
+// ==================== XỬ LÝ THANH TOÁN CHUNG ====================
+function xuLyThanhToan() {
+  const phuongThucInput = document.querySelector(
+    "input[name='checkout-payment']:checked"
+  );
+  const phuongThuc = phuongThucInput ? phuongThucInput.value : "cash";
+
+  if (!phuongThucInput) {
+    alert("Vui lòng chọn phương thức thanh toán!");
+    return;
+  }
+
+  if (phuongThuc === "cash") {
+    // ✅ Thanh toán khi nhận hàng
+    alert("Bạn đã chọn thanh toán khi nhận hàng (tiền mặt).");
+    xacNhanDatHang(); // Xóa giỏ hàng sau khi đặt
+  } else if (phuongThuc === "online") {
+    // ✅ Thanh toán online
+    alert("Thanh toán online thành công!");
+    xacNhanDatHang(); // Xóa giỏ hàng sau khi đặt
+  } else if (phuongThuc === "bank") {
+    // ✅ Chuyển khoản ngân hàng
+    alert("Đã xác nhận chuyển khoản thành công!");
+    xacNhanDatHang(); // Xóa giỏ hàng sau khi đặt
+  } else {
+    alert("Phương thức thanh toán không hợp lệ!");
+  }
+}
+
+
 // ==================== XÁC NHẬN ĐẶT HÀNG ====================
 function xacNhanDatHang() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
