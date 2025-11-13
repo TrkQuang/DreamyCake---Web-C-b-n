@@ -6,6 +6,10 @@
     <title>Quản lí bán hàng</title>
     <!-- <style></style> -->
     <link rel="stylesheet" href="admin-index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
     <!-- Sidebar -->
@@ -38,6 +42,10 @@
             Số lượng tồn
           </li>
         </ul>
+        <div class="logout-box" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span> Đăng xuất </span>
+        </div>
       </div>
     </div>
     <div class="main">
@@ -99,10 +107,8 @@
             <tr>
               <th>STT</th>
               <th>LOẠI BÁNH</th>
-              <!-- <th>MÃ BÁNH</th>
-              <th>TÊN BÁNH</th>
-              <th>MÔ TẢ</th> -->
-              <th colspan="2">THAO TÁC</th>
+              <th>TRẠNG THÁI</th>
+              <th colspan="3">THAO TÁC</th>
             </tr>
           </thead>
           <tbody class="type-list"></tbody>
@@ -141,6 +147,11 @@
             type="text"
             id="new-product-name"
             placeholder="Nhập tên bánh..."
+          />
+          <input
+            type="number"
+            id="new-product-amount"
+            placeholder="Nhập số lượng tồn..."
           />
           <input
             type="text"
@@ -195,6 +206,11 @@
             type="text"
             id="edit-product-name"
             placeholder="Nhập tên bánh cần sửa..."
+          />
+          <input
+            type="number"
+            id="edit-product-amount"
+            placeholder="Nhập số lượng tồn..."
           />
           <input
             type="text"
@@ -252,6 +268,7 @@
               <th>LOẠI BÁNH</th>
               <th>MÃ BÁNH</th>
               <th>TÊN BÁNH</th>
+              <th>SỐ LƯỢNG TỒN</th>
               <th>MÔ TẢ</th>
               <th>HÌNH ẢNH</th>
               <th colspan="2">THAO TÁC</th>
