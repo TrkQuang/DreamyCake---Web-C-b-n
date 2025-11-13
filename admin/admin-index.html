@@ -54,9 +54,26 @@
         <div class="header"><h2>Danh sách loại sản phẩm</h2></div>
         <div class="muted">Thêm sửa xóa loại sản phẩm</div>
 
-        <button class="button" id="add-type" onclick="showAddForm()">
-          Thêm loại sản phẩm
-        </button>
+        <div
+          style="margin: 15px 0; display: flex; gap: 10px; align-items: center"
+        >
+          <input
+            type="text"
+            id="search-category"
+            placeholder="🔍 Tìm kiếm loại sản phẩm..."
+            oninput="searchCategories()"
+            style="
+              flex: 1;
+              padding: 10px;
+              border: 1px solid #ffb5c1;
+              border-radius: 5px;
+              font-size: 15px;
+            "
+          />
+          <button class="button" id="add-type" onclick="showAddForm()">
+            Thêm loại sản phẩm
+          </button>
+        </div>
 
         <!-- Form thêm loại sản phẩm -->
         <div
@@ -120,9 +137,26 @@
         <div class="header"><h2>Danh sách sản phẩm</h2></div>
         <div class="muted">Thêm sửa xóa danh mục sản phẩm</div>
 
-        <button class="button" id="add-product" onclick="showAddProduct()">
-          Thêm sản phẩm
-        </button>
+        <div
+          style="margin: 15px 0; display: flex; gap: 10px; align-items: center"
+        >
+          <input
+            type="text"
+            id="search-product"
+            placeholder="🔍 Tìm kiếm sản phẩm (theo tên, mã, loại)..."
+            oninput="searchProducts()"
+            style="
+              flex: 1;
+              padding: 10px;
+              border: 1px solid #ffb5c1;
+              border-radius: 5px;
+              font-size: 15px;
+            "
+          />
+          <button class="button" id="add-product" onclick="showAddProduct()">
+            Thêm sản phẩm
+          </button>
+        </div>
 
         <!-- Form thêm sản phẩm -->
         <div
@@ -280,25 +314,59 @@
 
       <!-- Admin-Price -->
       <div class="section" id="prices" style="display: none">
-        <div class="header"><h2>Danh sách sản phẩm</h2></div>
-        <div class="muted">Thêm sửa tra cứu giá bán</div>
+        <div class="header"><h2>Giá Bán Sản Phẩm</h2></div>
+        <div class="muted">Tra cứu giá vốn, % lợi nhuận, giá bán</div>
 
-        <div class="filter">
-          <!-- <div>
-            <label for="loai">Loại sản phẩm: </label>
-            <select id="filter-type">
-              <option value="all">Tất cả</option>
-            </select>
-          </div> -->
-
+        <div
+          class="filter"
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+          "
+        >
           <div>
-            <label for="timkiem">Tìm kiếm: </label>
+            <label for="search-price-name">Tìm theo tên: </label>
             <input
               type="text"
               id="search-price-name"
-              placeholder="Nhập tên sản phẩm để tìm kiếm..."
+              placeholder="Nhập tên sản phẩm..."
               oninput="filterPrice()"
             />
+          </div>
+
+          <div>
+            <label for="filter-prime">Giá vốn: </label>
+            <select id="filter-prime" onchange="filterPrice()">
+              <option value="">Tất cả</option>
+              <option value="0-50000">Dưới 50.000đ</option>
+              <option value="50000-100000">50.000đ - 100.000đ</option>
+              <option value="100000-200000">100.000đ - 200.000đ</option>
+              <option value="200000-999999999">Trên 200.000đ</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="filter-profit">Lợi nhuận: </label>
+            <select id="filter-profit" onchange="filterPrice()">
+              <option value="">Tất cả</option>
+              <option value="0-20">Dưới 20%</option>
+              <option value="20-40">20% - 40%</option>
+              <option value="40-60">40% - 60%</option>
+              <option value="60-999">Trên 60%</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="filter-sale">Giá bán: </label>
+            <select id="filter-sale" onchange="filterPrice()">
+              <option value="">Tất cả</option>
+              <option value="0-100000">Dưới 100.000đ</option>
+              <option value="100000-200000">100.000đ - 200.000đ</option>
+              <option value="200000-300000">200.000đ - 300.000đ</option>
+              <option value="300000-999999999">Trên 300.000đ</option>
+            </select>
           </div>
         </div>
 
@@ -453,10 +521,10 @@
           <input type="date" id="filter-order-end-date" />
           <select id="filter-order-status">
             <option value="">--Tất Cả Tình Trạng--</option>
-            <option value="new">Mới Đặt</option>
-            <option value="processing">Đã Xử Lý</option>
-            <option value="delivered">Đã Giao</option>
-            <option value="cancelled">Hủy</option>
+            <option value="Chờ xác nhận">Chờ xác nhận</option>
+            <option value="Đang xử lý">Đang xử lý</option>
+            <option value="Đã giao hàng">Đã giao hàng</option>
+            <option value="Đã hủy">Đã hủy</option>
           </select>
           <button class="button" onclick="searchOrders()">
             <i class="fas fa-search"></i> Tra Cứu Đơn
@@ -491,7 +559,7 @@
 
         <button
           class="button"
-          onclick="showSection('section-order')"
+          onclick="showSection('order')"
           style="margin-top: 20px"
         >
           <i class="fas fa-arrow-left"></i> Quay Lại Danh Sách
@@ -545,10 +613,7 @@
 
           <label for="inventory-product">Chọn sản phẩm:</label>
           <select id="inventory-product" class="input">
-            <option value="TIRAMISU">TIRAMISU</option>
-            <option value="MACARON">MACARON</option>
-            <option value="ÉCLAIR">ÉCLAIR</option>
-            <option value="DONUT">DONUT</option>
+            <option value="">—— Chọn sản phẩm ——</option>
           </select>
 
           <button class="button" onclick="searchInventoryByProduct()">

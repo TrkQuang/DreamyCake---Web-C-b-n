@@ -1,63 +1,27 @@
-// Lấy dữ liệu từ localStorage (được quản lý bởi admin)
-function getMenuBanhFromLocalStorage() {
-  const types = JSON.parse(localStorage.getItem("types")) || [];
-  const products = JSON.parse(localStorage.getItem("products")) || [];
-  const prices = JSON.parse(localStorage.getItem("prices")) || [];
+// Lấy dữ liệu trực tiếp từ localStorage (được quản lý bởi admin)
+const types = JSON.parse(localStorage.getItem("types")) || [];
+const products = JSON.parse(localStorage.getItem("products")) || [];
+const prices = JSON.parse(localStorage.getItem("prices")) || [];
 
-  // Chuyển đổi từ định dạng admin sang định dạng MenuBanh
-  const MenuBanh = types
-    .map((type) => {
-      const typeName = type.name;
-      const cakes = products
-        .filter((product) => product.type === typeName)
-        .map((product) => {
-          // Tìm giá tương ứng
-          const priceInfo = prices.find((p) => p.name === product.name) || {
-            sale: 0,
-          };
-          return {
-            name: product.name,
-            price: priceInfo.sale,
-            img: product.img || priceInfo.img || "../img/default.jpg",
-          };
-        });
+// Lọc ra các loại sản phẩm KHÔNG bị ẩn (status !== true)
+const visibleTypes = types.filter((t) => !t.status).map((t) => t.name);
 
-      return {
-        category: typeName,
-        cakes: cakes,
-      };
-    })
-    .filter((category) => category.cakes.length > 0); // Chỉ giữ các category có sản phẩm
+// Tạo danh sách tất cả bánh trực tiếp từ products (chỉ lấy sản phẩm thuộc loại hiển thị)
+let tatCaBanh = products
+  .filter((product) => visibleTypes.includes(product.type))
+  .map((product) => {
+    // Tìm giá tương ứng
+    const priceInfo = prices.find((p) => p.name === product.name) || {
+      sale: 0,
+    };
 
-  return MenuBanh;
-}
-
-// Sử dụng dữ liệu từ localStorage thay vì dữ liệu cứng
-const MenuBanh = getMenuBanhFromLocalStorage();
-
-// Lưu vào localStorage để tương thích với code cũ
-localStorage.setItem("MenuBanh", JSON.stringify(MenuBanh));
-
-//================================================
-//Phân trang
-let tatCaBanh = [];
-// Duyệt qua từng loại bánh
-for (let i = 0; i < MenuBanh.length; i++) {
-  const loaiBanh = MenuBanh[i];
-
-  // Duyệt qua từng bánh trong loại đó
-  for (let j = 0; j < loaiBanh.cakes.length; j++) {
-    const banh = loaiBanh.cakes[j];
-
-    // Gắn thêm tên loại bánh vô mỗi bánh (để hiển thị)
-    tatCaBanh.push({
-      name: banh.name,
-      price: banh.price,
-      img: banh.img,
-      category: loaiBanh.category,
-    });
-  }
-}
+    return {
+      name: product.name,
+      price: priceInfo.sale,
+      img: product.img || priceInfo.img || "../img/default.jpg",
+      category: product.type, // Lấy type từ product luôn
+    };
+  });
 
 let dsHienThi = tatCaBanh.slice(); // mảng hiển thị hiện tại
 let trang = 1; // trang hiện tại
