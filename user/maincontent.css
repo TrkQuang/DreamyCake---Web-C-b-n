@@ -1232,18 +1232,6 @@ button:hover {
   color: black;
 }
 
-.socials {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: 16px; /*khoảng cách ô */
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .social {
   display: flex;
   border-radius: 12px;

@@ -12,6 +12,7 @@ body {
 
 /* Sidebar */
 .sidebar {
+  position: relative;
   width: 230px;
   background-color: #faf6f5;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
@@ -284,6 +285,35 @@ import-price {
   margin-bottom: 10px;
 }
 
+.logout-box {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #f8d0d2;
+  color: #4f4f4f;
+  border: none;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: 0.3s;
+  width: 90%;
+  font-size: 15px;
+}
+
+.logout-box:hover {
+  background-color: #ff92a9;
+  color: white;
+}
+
+.logout-box i {
+  font-size: 18px;
+}
 /* ================= MEDIA QUERY ================= */
 
 /* Tablet: chiều rộng tối đa 1024px */
@@ -291,6 +321,7 @@ import-price {
   .sidebar {
     width: 200px;
     padding: 15px;
+    position: relative;
   }
 
   .menu {
@@ -321,6 +352,15 @@ import-price {
   th,
   td {
     padding: 10px;
+  }
+
+  logout-box {
+    padding: 8px 0;
+    font-size: 14px;
+  }
+
+  .logout-box i {
+    font-size: 14px;
   }
 }
 
@@ -390,6 +430,21 @@ import-price {
     width: 100%;
     padding: 10px;
   }
+
+  .logout-box {
+    position: static; /* không cố định dưới cùng nữa */
+    margin: 15px auto;
+    width: 15%;
+    font-size: 14px;
+  }
+
+  .logout-box span {
+    display: none; /* chỉ hiện icon cho gọn */
+  }
+
+  .logout-box i {
+    font-size: 18px;
+  }
 }
 
 /* Mobile nhỏ hơn 480px */
@@ -420,6 +475,14 @@ import-price {
 
   .form-box {
     padding: 10px;
+  }
+  .logout-box {
+    padding: 6px 0;
+    width: 85%;
+  }
+
+  .logout-box i {
+    font-size: 16px;
   }
 }
 
@@ -461,4 +524,131 @@ import-price {
 .page-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ================= ACTION BUTTON STYLES ================= */
+
+/* Base Button Styles */
+.btn.btn-action {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 6px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  vertical-align: middle;
+  font-weight: 500;
+}
+
+.btn.btn-action i {
+  margin: 0;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.btn.btn-action span {
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Xem Button - Blue Theme */
+.btn-action.btn-view {
+  background-color: #3498db; /* Blue */
+  color: white;
+}
+
+.btn-action.btn-view:hover {
+  background-color: #429ee9; /* Dark blue */
+  color: rgb(189, 188, 188);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(30, 90, 138, 0.3);
+}
+
+.btn-action.btn-view:hover i {
+  transform: scale(1.1);
+}
+
+/* Sửa Button - Orange/Amber Theme */
+.btn-action.btn-edit {
+  background-color: #f39c12; /* Orange/Amber */
+  color: white;
+}
+
+.btn-action.btn-edit:hover {
+  background-color: #d68910; /* Darker orange */
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(214, 137, 16, 0.3);
+}
+
+.btn-action.btn-edit:hover i {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* Xóa Button - Red Theme */
+.btn-action.btn-delete {
+  background-color: #e74c3c; /* Red */
+  color: white;
+}
+
+.btn-action.btn-delete:hover {
+  background-color: #a93226; /* Dark red */
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(169, 50, 38, 0.3);
+}
+
+.btn-action.btn-delete:hover i {
+  transform: scale(1.15);
+}
+
+/* Action Column */
+.action-column {
+  white-space: nowrap;
+  text-align: left;
+}
+
+/* Status Tags (if you need them) */
+.tag {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-complete {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-draft {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-new {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-processing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-delivered {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
 }

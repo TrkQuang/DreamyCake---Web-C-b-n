@@ -5,6 +5,13 @@
   background-color: #e1ddd851;
 }
 
+#page-review,
+#page-cart,
+#page-checkout,
+#page-history:hover {
+  cursor: auto;
+}
+
 .cart-page-header {
   display: flex;
   justify-content: center;
