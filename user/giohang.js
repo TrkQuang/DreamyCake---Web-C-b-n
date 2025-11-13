@@ -350,6 +350,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ==================== XÁC NHẬN THANH TOÁN ====================
 function xacNhanThanhToan() {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  if (!currentUser) {
+    alert("Vui lòng đăng nhập để đặt hàng!");
+    return;
+  }
+
+  if (gioHang.length === 0) {
+    alert("Giỏ hàng trống!");
+    return;
+  }
   // Nếu chưa có địa chỉ nào
   if (danhSachDiaChi.length === 0) {
     alert(
@@ -375,6 +385,26 @@ function xacNhanThanhToan() {
   alert(
     `Thanh toán với địa chỉ:\n${selected.name} - ${selected.phone}\n${selected.address}`
   );
+
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const newOrder = {
+    orderId: "DH" + Date.now(),
+    username: currentUser.username,
+    date: new Date().toLocaleString("vi-VN"),
+    items: gioHang.map((item) => ({
+      ten: item.ten,
+      name: item.ten,
+      gia: item.gia,
+      hinhAnh: item.hinhAnh,
+      sl: item.sl,
+    })),
+    total: gioHang.reduce((sum, sp) => sum + sp.gia * sp.sl, 0),
+    status: "Chờ xác nhận",
+  };
+
+  orders.push(newOrder);
+  localStorage.setItem("orders", JSON.stringify(orders));
+
   // Reset giỏ hàng
   gioHang = [];
   localStorage.removeItem("gioHang");

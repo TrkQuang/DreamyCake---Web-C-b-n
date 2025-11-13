@@ -614,7 +614,11 @@ window.addEventListener("load", function () {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", function () {
       localStorage.removeItem("currentUser");
-      updateMenu(false); // cập nhật lại menu
+      // Xóa giỏ hàng cả ở bộ nhớ localStorage và biến tại runtime
+      localStorage.removeItem("gioHang");
+      gioHang = []; // reset giỏ hàng
+      capNhatBadgeGioHang(); // cập nhật badge
+      updateMenu(false); // cập nhật menu
       LoadPage(pagehome); // quay về trang chủ
     });
   }
@@ -716,13 +720,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-function dangXuat() {
-  localStorage.removeItem("currentUser");
-  // Xóa giỏ hàng cả ở bộ nhớ localStorage và biến tại runtime
-  localStorage.removeItem("gioHang");
-  gioHang = []; // reset giỏ hàng
-  capNhatBadgeGioHang(); // cập nhật badge
-  updateMenu(false); // cập nhật menu
-  LoadPage(pagehome); // quay về trang chủ
-}
