@@ -1650,10 +1650,7 @@ input:-webkit-autofill {
   display: none;
 }
 
-/* ========= đơn đặt hàng ====== */
-#page-history {
-  cursor: auto;
-}
+/* đơn đặt hàng */
 .ordersTable {
   position: relative;
   top: 60px;
@@ -1704,7 +1701,10 @@ input:-webkit-autofill {
 .column-item:last-child {
   border-bottom: none;
 }
-
+/* ========= đơn đặt hàng ====== */
+#page-history {
+  cursor: auto;
+}
 #orders-list {
   max-height: 470px; /* chỉ giới hạn tối đa, không bắt buộc đủ 500px */
   overflow-y: auto; /* chỉ hiện thanh cuộn khi nội dung vượt giới hạn */

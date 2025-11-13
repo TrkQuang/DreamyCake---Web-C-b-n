@@ -12,43 +12,6 @@ const menuIcon = document.querySelectorAll(".quickbox-item")[2]; // Icon menu (t
 
 //productlist + nút di chuyển
 const productList = document.querySelector(".product-list");
-const nextBtn = document.querySelector(".next-btn");
-const prevBtn = document.querySelector(".prev-btn");
-
-const editbtn = document.getElementById("editBtn"); //nút chỉnh sửa
-const savebtn = document.getElementById("saveBtn"); //nút lưu
-
-let currentIndex = 0; // Vị trí hiện tại (bắt đầu từ 0)
-const itemsPerSlide = 4; // Hiển thị 4 sản phẩm 1 lần
-const productItems = document.querySelectorAll(".product-item"); // Lấy tất cả sản phẩm
-const totalItems = productItems.length; // Tổng số sản phẩm = 11
-// Hàm trượt slider
-function slideProducts() {
-  // Tính khoảng cách cần trượt
-  // Ví dụ: currentIndex = 1 → trượt 25% (4 sản phẩm)
-  const slideAmount = currentIndex * 25; // 25% = 100% / 4 sản phẩm
-  // Trượt sang trái bằng transform
-  productList.style.transform = `translateX(-${slideAmount}%)`;
-}
-// Khi bấm nút Next (→)
-nextBtn.addEventListener("click", function () {
-  currentIndex++; // Tăng vị trí lên 1
-  // Nếu đến cuối (vị trí 11) → Quay về đầu (vị trí 0)
-  if (currentIndex >= totalItems - itemsPerSlide + 1) {
-    currentIndex = 0;
-  }
-  slideProducts(); // Trượt
-});
-
-// Khi bấm nút Prev (←)
-prevBtn.addEventListener("click", function () {
-  currentIndex--; // Giảm vị trí xuống 1
-  // Nếu lùi quá đầu → Nhảy về cuối
-  if (currentIndex < 0) {
-    currentIndex = totalItems - itemsPerSlide;
-  }
-  slideProducts(); // Trượt
-});
 
 function openMenu() {
   sidebar.classList.add("active");
@@ -113,6 +76,9 @@ function DangKy() {
   sidebar.style.display = "none";
 }
 
+const editbtn = document.getElementById("editBtn");
+const savebtn = document.getElementById("saveBtn");
+
 // Đóng form đăng ký khi click ra ngoài
 DangKyOverlay.addEventListener("click", function (e) {
   if (e.target === this) {
@@ -132,13 +98,11 @@ function DangNhap() {
 //========= ĐĂNG KÝ ==========
 //mắt
 const eyes = document.querySelectorAll(".eyePassword");
-
 eyes.forEach((eye) => {
   // Duyệt từng icon trong danh sách
   eye.addEventListener("click", function () {
     const passwordRow = this.closest(".password-row");
     const passwordInput = passwordRow.querySelector("input");
-
     // Kiểm tra loại input để đổi giữa password và text
     if (passwordInput.type === "password") {
       passwordInput.type = "text"; // Hiện mật khẩu
