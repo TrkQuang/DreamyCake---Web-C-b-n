@@ -618,21 +618,30 @@ window.addEventListener("load", function () {
 });
 
 // ==================== HIỂN THỊ DANH SÁCH ĐƠN HÀNG ====================
-function dinhDangGia(number) {
-  return number.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-}
-
 function hienThiDonHang() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
   const ordersList = document.getElementById("orders-list");
+  const ordersTable = document.querySelector(".ordersTable");
 
-  if (!ordersList) return;
+  if (!ordersList || !ordersTable) return;
 
   // Xóa toàn bộ nội dung cũ
   ordersList.innerHTML = "";
 
-  // ==== Tạo hàng header ====
+  // Xóa dòng thông báo cũ nếu có
+  const oldMsg = ordersTable.querySelector(".no-orders-msg");
+  if (oldMsg) oldMsg.remove();
+
+  // Lọc đơn của người dùng
+  let userOrders = [];
+  if (currentUser) {
+    userOrders = orders.filter(
+      (order) => order.username === currentUser.username
+    );
+  }
+
+  // Tạo hàng header
   const headerRow = document.createElement("div");
   headerRow.classList.add("orders-grid");
   headerRow.innerHTML = `
@@ -643,27 +652,19 @@ function hienThiDonHang() {
   `;
   ordersList.appendChild(headerRow);
 
-  // Lọc đơn của người dùng
-  const userOrders = [];
-  if (currentUser) {
-    for (let i = 0; i < orders.length; i++) {
-      if (orders[i].username === currentUser.username) {
-        userOrders.push(orders[i]);
-      }
-    }
-  }
-
   if (userOrders.length === 0) {
     const msg = document.createElement("p");
+    msg.className = "no-orders-msg";
     msg.style.textAlign = "center";
     msg.style.marginTop = "20px";
     msg.textContent = "Chưa có đơn hàng nào.";
-    ordersList.appendChild(msg);
+    ordersList.style.borderBottom = "none";
+    ordersTable.appendChild(msg);
     return;
   }
 
-  // ==== Tạo từng hàng đơn hàng ====
-  userOrders.forEach((order) => {
+  // Tạo từng hàng đơn
+  userOrders.forEach((order, index) => {
     const orderRow = document.createElement("div");
     orderRow.classList.add("orders-grid");
     orderRow.innerHTML = `
@@ -680,8 +681,15 @@ function hienThiDonHang() {
         order.total
       )}</div></div>
     `;
+    // Nếu là dòng cuối cùng, thêm border-bottom
+    if (index === userOrders.length - 1) {
+      orderRow.style.borderBottom = "1px solid #ccc";
+    }
     ordersList.appendChild(orderRow);
   });
+
+  // Xóa border-bottom mặc định của container để không bị dày
+  ordersList.style.borderBottom = "none";
 }
 
 // ==================== KHI CLICK VÀO NÚT "ĐƠN HÀNG" ====================

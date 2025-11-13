@@ -1232,18 +1232,6 @@ button:hover {
   color: black;
 }
 
-.socials {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: 16px; /*khoảng cách ô */
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .social {
   display: flex;
   border-radius: 12px;
@@ -1659,37 +1647,43 @@ input:-webkit-autofill {
   padding: 0 15px;
 }
 
-.orders-grid {
-  display: flex;
-  border: 1px solid #ccc; /* viền tổng thể */
-  border-bottom: none;
+/* ✅ Tạo khung chỉ quanh phần danh sách đơn hàng */
+#orders-list {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 470px;
+  overflow-y: auto;
 }
 
-.orders-grid:last-child {
+/* các cột */
+.orders-grid {
+  display: flex;
   border-bottom: 1px solid #ccc;
 }
 
 .orders-column {
-  flex: 1; /* chia đều 4 cột */
+  flex: 1; /*chia đều 4 cột */
   text-align: center;
   padding: 10px 5px;
-  border-left: 1px solid #ccc; /* viền giữa các cột */
+  border-left: 1px solid #ccc;
 }
 
 .orders-column:first-child {
-  border-left: none; /* cột đầu không cần viền trái */
+  border-left: none;
 }
 
-/*dòng tiêu đề */
+/* dòng tiêu đề */
 .column-header {
   font-weight: bold;
   text-align: center;
+  height: 30px;
   background-color: #f0f0f0;
 }
 
 /* dòng dữ liệu */
 .column-value {
   padding: 8px 5px;
+  height: 30px;
 }
 
 .column-item {
@@ -1701,10 +1695,11 @@ input:-webkit-autofill {
 .column-item:last-child {
   border-bottom: none;
 }
-/* ========= đơn đặt hàng ====== */
+
 #page-history {
   cursor: auto;
 }
+
 #orders-list {
   max-height: 470px; /* chỉ giới hạn tối đa, không bắt buộc đủ 500px */
   overflow-y: auto; /* chỉ hiện thanh cuộn khi nội dung vượt giới hạn */
