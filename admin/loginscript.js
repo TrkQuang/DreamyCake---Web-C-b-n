@@ -26,13 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const matched = accounts.find(
         (acc) => acc.username === username && acc.password === password
       );
-      if (document.getElementById("rememberMe").checked) {
-        localStorage.setItem("rememberedAdminUsername", username);
-        localStorage.setItem("rememberedAdminPassword", password);
-      } else {
-        localStorage.removeItem("rememberedAdminUsername");
-        localStorage.removeItem("rememberedAdminPassword");
-      }
+      
       if (matched) {
         localStorage.setItem("loggedInAdmin", username);
         alert("✅ Đăng nhập thành công!");
@@ -43,16 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   } else {
     console.error("Không tìm thấy form có id='adminLoginForm'");
-  }
-});
-window.addEventListener("load", () => {
-  const savedUser = localStorage.getItem("rememberedUser");
-  const savedPass = localStorage.getItem("rememberedPass");
-
-  if (savedUser && savedPass) {
-    document.getElementById("username1").value = savedUser;
-    document.getElementById("password").value = savedPass;
-    document.getElementById("rememberMe").checked = true;
   }
 });
 
