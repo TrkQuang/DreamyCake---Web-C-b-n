@@ -364,7 +364,7 @@
             <button class="checkout-btn-primary" onclick="luuDiaChiMoi()">Lưu địa chỉ</button>
           </div>
         </div>
-
+        <!--Phương thức thanh toán-->
         <div class="checkout-address-section">
           <h3>Phương thức thanh toán</h3>
           <div class="checkout-payment-methods">
@@ -385,7 +385,7 @@
             </label>
           </div>
         </div>
-
+        <!--Tổng tiền-->
         <div class="checkout-order">
           <h3>Tổng kết đơn hàng</h3>
           <div class="checkout-row">
@@ -393,14 +393,26 @@
             <span id="checkout-subtotal">0đ</span>
           </div>
         </div>
+        <!--Nút hành động-->
         <div class="checkout-action-buttons">
-          <button class="checkout-btn-secondary" onclick="moTrangThanhToan()">
-            <i class="i-back"></i> Tiến hành thanh toán
+          <button class="checkout-btn-secondary" onclick="chuyenTrang('page-cart')">
+            <i class="i-back"></i> Quay lại giỏ hàng
           </button>
-          <button class="checkout-btn-confirm" onclick="xacNhanDatHang()">
-          Xác nhận thanh toán
+          <button class="checkout-btn-confirm" onclick="xemLaiDonHang()">
+          Xem lại đơn hàng
           </button>
         </div>
+      </div>
+    </main>
+    <!--Xem lại đơn hàng-->
+    <main class="page-content hidden" id="page-review">
+      <div class="review-page-header">
+        <h1><i class="i-check"></i></h1>
+      </div>
+      <div class="review-content" id="order-review-content"></div>
+      <div class="review-action-buttons">
+        <button class="checkout-btn-secondary" onclick="chuyenTrang('page-checkout')">Quay lại trang thanh toán</button>
+        <button class="checkout-btn-confirm" onclick="xacNhanDatHang()">Xác nhận đặt hàng</button>
       </div>
     </main>
 

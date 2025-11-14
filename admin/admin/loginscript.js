@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const defaultAdmins = [
       { username: "admin1", password: "123456" },
       { username: "admin2", password: "654321" },
+      { username: "nhuquynh", password: "21022006" },
     ];
     localStorage.setItem("adminAccounts", JSON.stringify(defaultAdmins));
   }
@@ -26,17 +27,34 @@ document.addEventListener("DOMContentLoaded", () => {
       const matched = accounts.find(
         (acc) => acc.username === username && acc.password === password
       );
-      
       if (matched) {
         localStorage.setItem("loggedInAdmin", username);
         alert("✅ Đăng nhập thành công!");
         window.location.href = "admin-index.html"; // đổi đường dẫn nếu cần
+        if (document.getElementById("rememberMe").checked) {
+          localStorage.setItem("rememberedAdminUsername", username);
+          localStorage.setItem("rememberedAdminPassword", password);
+        } else {
+          localStorage.removeItem("rememberedAdminUsername");
+          localStorage.removeItem("rememberedAdminPassword");
+        }
       } else {
         alert("❌ Sai tên đăng nhập hoặc mật khẩu!");
       }
     });
   } else {
     console.error("Không tìm thấy form có id='adminLoginForm'");
+  }
+});
+window.addEventListener("load", () => {
+  // Tự động điền nếu đã lưu thông tin
+  const savedUsername = localStorage.getItem("rememberedAdminUsername");
+  const savedPassword = localStorage.getItem("rememberedAdminPassword");
+
+  if (savedUsername && savedPassword) {
+    document.getElementById("username").value = savedUsername;
+    document.getElementById("password").value = savedPassword;
+    document.getElementById("rememberMe").checked = true;
   }
 });
 

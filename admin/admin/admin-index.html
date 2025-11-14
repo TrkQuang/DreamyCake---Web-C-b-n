@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lí bán hàng</title>
+    <!-- <style></style> -->
+    <link rel="stylesheet" href="admin-index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <img src="../img/icon/logo.png" alt="logo" />
+      </div>
+
+      <div class="menu">
+        <ul>
+          <li class="menu-item" onclick="showSection('customers', this)">
+            Người dùng
+          </li>
+          <li class="menu-item" onclick="showSection('category', this)">
+            Loại sản phẩm
+          </li>
+          <li class="menu-item" onclick="showSection('products', this)">
+            Danh mục sản phẩm
+          </li>
+          <li class="menu-item" onclick="showSection('import', this)">
+            Nhập sản phẩm
+          </li>
+          <li class="menu-item" onclick="showSection('prices', this)">
+            Giá bán
+          </li>
+          <li class="menu-item" onclick="showSection('order', this)">
+            Đơn đặt hàng
+          </li>
+          <li class="menu-item" onclick="showSection('inventory', this)">
+            Số lượng tồn
+          </li>
+        </ul>
+        <div class="logout-box" onclick="logoutAdmin()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span> Đăng xuất </span>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      <!-- Admin-Category -->
+      <div class="section" id="category" style="display: none">
+        <div class="header"><h2>Danh sách loại sản phẩm</h2></div>
+        <div class="muted">Thêm sửa xóa loại sản phẩm</div>
+
+        <div
+          style="margin: 15px 0; display: flex; gap: 10px; align-items: center"
+        >
+          <input
+            type="text"
+            id="search-category"
+            placeholder="🔍 Tìm kiếm loại sản phẩm..."
+            oninput="searchCategories()"
+            style="
+              flex: 1;
+              padding: 10px;
+              border: 1px solid #ffb5c1;
+              border-radius: 5px;
+              font-size: 15px;
+            "
+          />
+          <button class="button" id="add-type" onclick="showAddForm()">
+            Thêm loại sản phẩm
+          </button>
+        </div>
+
+        <!-- Form thêm loại sản phẩm -->
+        <div
+          class="form-box"
+          id="form-add"
+          style="display: none; margin-bottom: 15px"
+        >
+          <input type="text" id="new-type" placeholder="Nhập loại bánh..." />
+          <div class="form-buttons">
+            <button class="button" onclick="saveAdd()">Lưu</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+
+        <!-- Form sửa loại sản phẩm -->
+        <div
+          class="form-box"
+          id="form-edit"
+          style="display: none; margin-bottom: 15px"
+        >
+          <input
+            type="text"
+            id="edit-type"
+            placeholder="Nhập loại bánh cần sửa..."
+          />
+          <div class="form-buttons">
+            <button class="button" onclick="saveEdit()">Lưu</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+
+        <!-- Form xóa loại sản phẩm -->
+        <div
+          class="form-box"
+          id="form-delete"
+          style="display: none; margin-bottom: 15px"
+        >
+          <h3>Xóa loại sản phẩm</h3>
+          <p>Bạn có chắc muốn xóa loại sản phẩm này?</p>
+          <div class="form-buttons">
+            <button class="button" onclick="confirmDelete()">Xóa</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+        <!-- Bảng loại sản phẩm -->
+        <table id="table-type">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>LOẠI BÁNH</th>
+              <th>TRẠNG THÁI</th>
+              <th colspan="3">THAO TÁC</th>
+            </tr>
+          </thead>
+          <tbody class="type-list"></tbody>
+        </table>
+      </div>
+
+      <!-- Admin-Product-List -->
+      <div class="section" id="products" style="display: none">
+        <div class="header"><h2>Danh sách sản phẩm</h2></div>
+        <div class="muted">Thêm sửa xóa danh mục sản phẩm</div>
+
+        <div
+          style="margin: 15px 0; display: flex; gap: 10px; align-items: center"
+        >
+          <input
+            type="text"
+            id="search-product"
+            placeholder="🔍 Tìm kiếm sản phẩm (theo tên, mã, loại)..."
+            oninput="searchProducts()"
+            style="
+              flex: 1;
+              padding: 10px;
+              border: 1px solid #ffb5c1;
+              border-radius: 5px;
+              font-size: 15px;
+            "
+          />
+          <button class="button" id="add-product" onclick="showAddProduct()">
+            Thêm sản phẩm
+          </button>
+        </div>
+
+        <!-- Form thêm sản phẩm -->
+        <div
+          class="form-box"
+          id="form-add-product"
+          style="display: none; margin-bottom: 15px"
+        >
+          <!-- <input
+            type="text"
+            id="new-product-type"
+            placeholder="Nhập loại bánh..."
+          /> -->
+          <select id="new-product-type">
+            <option value="">-- Chọn loại sản phẩm --</option>
+          </select>
+          <input
+            type="text"
+            id="new-product-id"
+            placeholder="Nhập mã bánh..."
+          />
+          <input
+            type="text"
+            id="new-product-name"
+            placeholder="Nhập tên bánh..."
+          />
+          <input
+            type="number"
+            id="new-product-amount"
+            placeholder="Nhập số lượng tồn..."
+          />
+          <input
+            type="text"
+            id="new-product-describe"
+            placeholder="Nhập mô tả..."
+          />
+          <div style="margin: 10px 0">
+            <label style="display: block; margin-bottom: 5px">Hình ảnh:</label>
+            <input
+              type="file"
+              id="new-product-img-file"
+              accept="image/*"
+              style="margin-bottom: 5px"
+            />
+            <span
+              style="
+                display: block;
+                margin: 5px 0;
+                font-size: 14px;
+                color: #666;
+              "
+              >hoặc</span
+            >
+            <input
+              type="text"
+              id="new-product-img"
+              placeholder="Nhập đường dẫn hình ảnh..."
+            />
+          </div>
+
+          <div class="form-buttons">
+            <button class="button" onclick="saveAddProduct()">Lưu</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+
+        <!-- Form sửa sản phẩm -->
+        <div
+          class="form-box"
+          id="form-edit-product"
+          style="display: none; margin-bottom: 15px"
+        >
+          <select id="edit-product-type">
+            <option value="">-- Chọn loại sản phẩm --</option>
+          </select>
+          <input
+            type="text"
+            id="edit-product-id"
+            placeholder="Nhập mã bánh cần sửa..."
+          />
+          <input
+            type="text"
+            id="edit-product-name"
+            placeholder="Nhập tên bánh cần sửa..."
+          />
+          <input
+            type="number"
+            id="edit-product-amount"
+            placeholder="Nhập số lượng tồn..."
+          />
+          <input
+            type="text"
+            id="edit-product-describe"
+            placeholder="Nhập mô tả cần sửa..."
+          />
+          <div style="margin: 10px 0">
+            <label style="display: block; margin-bottom: 5px">Hình ảnh:</label>
+            <input
+              type="file"
+              id="edit-product-img-file"
+              accept="image/*"
+              style="margin-bottom: 5px"
+            />
+            <span
+              style="
+                display: block;
+                margin: 5px 0;
+                font-size: 14px;
+                color: #666;
+              "
+              >hoặc</span
+            >
+            <input
+              type="text"
+              id="edit-product-img"
+              placeholder="Nhập đường dẫn hình ảnh cần sửa..."
+            />
+            <div id="edit-product-img-preview" style="margin-top: 10px"></div>
+          </div>
+          <div class="form-buttons">
+            <button class="button" onclick="saveEditProduct()">Lưu</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+
+        <!-- Form xóa sản phẩm -->
+        <div
+          class="form-box"
+          id="form-delete-product"
+          style="display: none; margin-bottom: 15px"
+        >
+          <h3>Xóa loại sản phẩm</h3>
+          <p>Bạn có chắc muốn xóa loại sản phẩm này?</p>
+          <div class="form-buttons">
+            <button class="button" onclick="confirmDeleteProduct()">Xóa</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+        <!-- Bảng sản phẩm -->
+        <table id="table-product">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>LOẠI BÁNH</th>
+              <th>MÃ BÁNH</th>
+              <th>TÊN BÁNH</th>
+              <th>SỐ LƯỢNG TỒN</th>
+              <th>MÔ TẢ</th>
+              <th>HÌNH ẢNH</th>
+              <th colspan="2">THAO TÁC</th>
+            </tr>
+          </thead>
+          <tbody class="product-list"></tbody>
+        </table>
+      </div>
+
+      <!-- Admin-Price -->
+      <div class="section" id="prices" style="display: none">
+        <div class="header"><h2>Giá Bán Sản Phẩm</h2></div>
+        <div class="muted">Tra cứu giá vốn, % lợi nhuận, giá bán</div>
+
+        <div
+          class="filter"
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+          "
+        >
+          <div>
+            <label for="search-price-name">Tìm theo tên: </label>
+            <input
+              type="text"
+              id="search-price-name"
+              placeholder="Nhập tên sản phẩm..."
+              oninput="filterPrice()"
+            />
+          </div>
+
+          <div>
+            <label for="filter-prime">Giá vốn: </label>
+            <select id="filter-prime" onchange="filterPrice()">
+              <option value="">Tất cả</option>
+              <option value="0-50000">Dưới 50.000đ</option>
+              <option value="50000-100000">50.000đ - 100.000đ</option>
+              <option value="100000-200000">100.000đ - 200.000đ</option>
+              <option value="200000-999999999">Trên 200.000đ</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="filter-profit">Lợi nhuận: </label>
+            <select id="filter-profit" onchange="filterPrice()">
+              <option value="">Tất cả</option>
+              <option value="0-20">Dưới 20%</option>
+              <option value="20-40">20% - 40%</option>
+              <option value="40-60">40% - 60%</option>
+              <option value="60-999">Trên 60%</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="filter-sale">Giá bán: </label>
+            <select id="filter-sale" onchange="filterPrice()">
+              <option value="">Tất cả</option>
+              <option value="0-100000">Dưới 100.000đ</option>
+              <option value="100000-200000">100.000đ - 200.000đ</option>
+              <option value="200000-300000">200.000đ - 300.000đ</option>
+              <option value="300000-999999999">Trên 300.000đ</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Form nhập lợi nhuận -->
+        <div
+          class="form-box"
+          id="form-new-price"
+          style="display: none; margin-bottom: 15px"
+        >
+          <input
+            type="text"
+            id="new-price-prime"
+            placeholder="Nhập giá vốn..."
+          />
+          <input
+            type="text"
+            id="new-price-profit"
+            placeholder="Nhập lợi nhuận..."
+          />
+
+          <div class="form-buttons">
+            <button class="button" onclick="saveNewPrice()">Lưu</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+
+        <!-- Form sửa lợi nhuận -->
+        <div
+          class="form-box"
+          id="form-edit-profit"
+          style="display: none; margin-bottom: 15px"
+        >
+          <input
+            type="text"
+            id="edit-price-prime"
+            placeholder="Sửa lại giá vốn..."
+          />
+          <input
+            type="text"
+            id="edit-price-profit"
+            placeholder="Sửa lại lợi nhuận..."
+          />
+
+          <div class="form-buttons">
+            <button class="button" onclick="saveEditPrice()">Lưu</button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+
+        <!-- form xóa lợi nhuận -->
+        <div
+          class="form-box"
+          id="form-delete-prices"
+          style="display: none; margin-bottom: 15px"
+        >
+          <h3>Xóa Giá Bán</h3>
+        </div>
+
+        <table id="table-price">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>TÊN BÁNH</th>
+              <th>LOẠI BÁNH</th>
+              <th>GIÁ VỐN (VNĐ)</th>
+              <th>% LỢI NHUẬN</th>
+              <th>GIÁ BÁN (VNĐ)</th>
+              <th>THAO TÁC</th>
+            </tr>
+          </thead>
+          <tbody class="price-list"></tbody>
+        </table>
+      </div>
+
+      <div id="import" class="section" style="display: none">
+        <h2>Quản Lý Phiếu Nhập Hàng 📝</h2>
+
+        <div class="filter">
+          <input
+            type="text"
+            placeholder="Tìm Mã Phiếu..."
+            id="search-import-id"
+          />
+          <select id="filter-import-status">
+            <option value="">--Tất Cả Trạng Thái--</option>
+            <option value="draft">Chưa Hoàn Thành</option>
+            <option value="complete">Đã Hoàn Thành</option>
+          </select>
+          <button class="button" onclick="searchImport()">
+            <i class="fas fa-search"></i> Tìm Kiếm
+          </button>
+          <button class="button" onclick="showAddImportForm()">
+            <i class="fas fa-plus"></i> Thêm Phiếu Nhập Mới
+          </button>
+        </div>
+
+        <table class="data-table" id="import-table">
+          <thead>
+            <tr>
+              <th>Mã Phiếu</th>
+              <th>Ngày Nhập</th>
+              <th>Tổng Giá Trị</th>
+              <th>Trạng Thái</th>
+              <th>Hành Động</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="section-import-form" class="section" style="display: none">
+        <h3 id="import-form-title">Thêm Phiếu Nhập Mới</h3>
+
+        <div class="form-group">
+          <label for="import-date">Ngày Nhập:</label>
+          <input type="date" id="import-date" value="2025-10-26" />
+        </div>
+
+        <h4>Chi Tiết Sản Phẩm Nhập</h4>
+        <div id="import-items-list"></div>
+        <button class="button" onclick="addImportItemRow()">
+          <i class="fas fa-cart-plus"></i> Thêm Sản Phẩm Khác
+        </button>
+
+        <div class="form-group" style="margin-top: 20px">
+          <strong
+            >Tổng Giá Trị Phiếu: <span id="import-total">0</span> VNĐ</strong
+          >
+        </div>
+
+        <button class="button" id="save-import-btn" onclick="saveImport(false)">
+          <i class="fas fa-save"></i> Lưu (Chưa Hoàn Thành)
+        </button>
+        <button
+          class="button"
+          id="complete-import-btn"
+          onclick="saveImport(true)"
+        >
+          <i class="fas fa-check"></i> Hoàn Thành Phiếu
+        </button>
+        <button class="button-cancel" onclick="showSection('section-import')">
+          <i class="fas fa-times"></i> Hủy/Quay Lại
+        </button>
+      </div>
+
+      <div id="order" class="section" style="display: none">
+        <h2>Quản Lý Đơn Đặt Hàng 🎀</h2>
+
+        <div class="filter">
+          <input type="date" id="filter-order-start-date" />
+          <span style="margin: 0 5px">đến</span>
+          <input type="date" id="filter-order-end-date" />
+          <select id="filter-order-status">
+            <option value="">--Tất Cả Tình Trạng--</option>
+            <option value="Chờ xác nhận">Chờ xác nhận</option>
+            <option value="Đang xử lý">Đang xử lý</option>
+            <option value="Đã giao hàng">Đã giao hàng</option>
+            <option value="Đã hủy">Đã hủy</option>
+          </select>
+          <button class="button" onclick="searchOrders()">
+            <i class="fas fa-search"></i> Tra Cứu Đơn
+          </button>
+        </div>
+
+        <table class="data-table" id="order-table">
+          <thead>
+            <tr>
+              <th>Mã Đơn</th>
+              <th>Ngày Đặt</th>
+              <th>Khách Hàng</th>
+              <th>Tổng Tiền</th>
+              <th>Tình Trạng</th>
+              <th>Hành Động</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="order-detail" class="section" style="display: none">
+        <h3 id="order-detail-title">Chi Tiết Đơn Hàng #</h3>
+
+        <div id="order-info"></div>
+
+        <div class="form-group" style="margin-top: 30px">
+          <strong>Cập Nhật Tình Trạng Đơn:</strong>
+          <span id="current-status" class="tag"></span>
+          <div id="status-actions" style="margin-top: 10px"></div>
+        </div>
+
+        <button
+          class="button"
+          onclick="showSection('order')"
+          style="margin-top: 20px"
+        >
+          <i class="fas fa-arrow-left"></i> Quay Lại Danh Sách
+        </button>
+      </div>
+
+      <div class="section" id="customers" style="display: none">
+        <h2 class="header">Danh sách khách hàng</h2>
+        <div class="muted">Quản Lí Thông Tin Khách Hàng</div>
+        <div class="filter">
+          <label for="search-user">Tìm Kiếm Người Dùng</label>
+          <input
+            type="text"
+            id="search-user"
+            placeholder="Nhập họ tên,sdt..."
+            oninput="filterUsers()"
+          />
+        </div>
+        <table id="table-user">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên Khách Hàng</th>
+              <th>Email</th>
+              <th>SDT</th>
+              <th>Địa chỉ</th>
+              <th>Trạng thái</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody class="user-list"></tbody>
+        </table>
+        <div class="form-box" id="form-reset-password" style="display: none">
+          <h3>Reset mật khẩu</h3>
+          <p>Bạn có chắc muốn reset mật khẩu cho khách hàng này?</p>
+          <div class="form-buttons">
+            <button class="button" onclick="confirmResetPassword()">
+              Xác nhận
+            </button>
+            <button class="button-cancel" onclick="hideForms()">Hủy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="inventory" style="display: none">
+        <div class="inventory-search">
+          <h3>🔍 Tra cứu tồn kho theo sản phẩm</h3>
+
+          <label for="inventory-date">Chọn ngày:</label>
+          <input type="date" id="inventory-date" class="input" />
+
+          <label for="inventory-product">Chọn sản phẩm:</label>
+          <select id="inventory-product" class="input">
+            <option value="">—— Chọn sản phẩm ——</option>
+          </select>
+
+          <button class="button" onclick="searchInventoryByProduct()">
+            Tra cứu
+          </button>
+          <div id="inventory-result" class="alert-box"></div>
+        </div>
+
+        <div class="inventory-warning">
+          <h3>⚠️ Cảnh báo sản phẩm sắp hết hàng</h3>
+          <button class="button" onclick="checkLowStock()">
+            Kiểm tra tồn kho
+          </button>
+          <div id="low-stock-result" class="alert-box"></div>
+        </div>
+
+        <div class="inventory-summary">
+          <h3>📊 Nhập – Xuất – Tồn theo khoảng thời gian</h3>
+
+          <label for="start-date">Từ ngày:</label>
+          <input type="date" id="start-date" class="input" />
+
+          <label for="end-date">Đến ngày:</label>
+          <input type="date" id="end-date" class="input" />
+
+          <button class="button" onclick="summarizeInventory()">
+            Xem thống kê
+          </button>
+          <div id="summary-result" class="alert-box"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Js -->
+    <script src="admin-index.js"></script>
+  </body>
+</html>
