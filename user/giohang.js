@@ -226,12 +226,6 @@ function chuyenTrang(id) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function moTrangThanhToan() {
-  chuyenTrang("page-checkout");
-  hienThiDanhSachDiaChi(); // hiển thị radio địa chỉ
-  capNhatTongTienThanhToan(); // cập nhật tổng tiền
-}
-
 // ==================== THANH TOÁN & ĐỊA CHỈ ====================
 function hienThiFormDiaChiMoi() {
   const form = document.getElementById("checkout-new-address-form");

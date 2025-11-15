@@ -395,7 +395,7 @@
         </div>
         <!--Nút hành động-->
         <div class="checkout-action-buttons">
-          <button class="checkout-btn-secondary" onclick="chuyenTrang('page-cart')">
+          <button class="checkout-btn-secondary" onclick="LoadPage('page-cart')">
             <i class="i-back"></i> Quay lại giỏ hàng
           </button>
           <button class="checkout-btn-confirm" onclick="xemLaiDonHang()">
@@ -410,10 +410,11 @@
         <h1><i class="i-check"></i></h1>
       </div>
       <div class="review-content" id="order-review-content"></div>
-      <div class="review-action-buttons">
-        <button class="checkout-btn-secondary" onclick="chuyenTrang('page-checkout')">Quay lại trang thanh toán</button>
-        <button class="checkout-btn-confirm" onclick="xacNhanDatHang()">Xác nhận đặt hàng</button>
-      </div>
+        <div class="review-action-buttons">
+          <button class="checkout-btn-secondary" onclick="LoadPage('page-checkout')">Quay lại trang thanh toán</button>
+          <button class="checkout-btn-confirm" onclick="xacNhanDatHang()">Xác nhận đặt hàng</button>
+        </div>
+    
     </main>
 
     <!--Đăng nhập-->

@@ -364,7 +364,9 @@
   gap: 14px;
   justify-content: space-between;
   margin-top: 30px;
+  border: none;
 }
+
 .checkout-btn-secondary,
 .checkout-btn-confirm {
   border: none;
@@ -412,13 +414,14 @@
   font-size: 26px;
 }
 
-.review-container {
+.review-content {
   max-width: 960px;
   margin: 32px auto;
   padding: 28px;
   background: #fff;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: none;
 }
 .review-order-content {
   background: #faf8f5;
@@ -434,9 +437,10 @@
 .review-action-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
   justify-content: space-between;
+  padding: 0px 400px;
   margin-top: 28px;
+  border: none;
 }
 .review-btn-secondary,
 .review-btn-confirm {
